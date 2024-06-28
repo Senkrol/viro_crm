@@ -27,6 +27,7 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
+     * функция общего доступа к данным, по всему приложению
      * Define the props that are shared by default.
      *
      * @see https://inertiajs.com/shared-data
@@ -36,7 +37,12 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'auth.user' => 'raspizday' ?? null,
+/* lazy load
+            'auth.user' => fn () => $request->user()
+            ? $request->user()->only('id', 'name', 'email')
+            : null,
+*/
         ]);
     }
 }

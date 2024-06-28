@@ -8,3 +8,12 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Home');
 });
+
+// url компонент данные
+Route::inertia('/about', 'About', ['user' => 'Mike']);
+
+/*
+Route::get('/about', function () {
+  return inertia('About', ['user' => 'Mike']);
+});
+*/

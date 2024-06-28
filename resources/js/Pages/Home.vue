@@ -1,5 +1,10 @@
+<script setup>
+
+</script>
 <template>
-  <div>
-    <h1>Hello</h1>
-  </div>
+  <Head>
+    <title>| Дом</title>
+  </Head>
+    <h1>название {{ $page.component }}</h1>
+    <h1>юзер {{ $page.props.user }}</h1>
 </template>
