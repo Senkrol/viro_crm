@@ -7,10 +7,10 @@ use Inertia\Inertia;
 // инерция начинает поиск в resources/js/Pages/ и так далее
 Route::get('/', function () {
     return Inertia::render('Home');
-});
+})->name('home');
 
 // url компонент данные
-Route::inertia('/about', 'About', ['user' => 'Mike']);
+Route::inertia('/about', 'About', ['user' => 'Mike'])->name('about');
 
 /*
 Route::get('/about', function () {

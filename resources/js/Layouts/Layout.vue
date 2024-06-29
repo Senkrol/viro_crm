@@ -8,8 +8,8 @@
       <h1>Home</h1>
       <nav>
         <div>
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
+          <Link :href="route('home')">Home</Link>
+          <Link :href="route('about')">About</Link>
         </div>
       </nav>
     </header>
