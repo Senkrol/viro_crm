@@ -3,18 +3,26 @@
 </script>
 
 <template>
+
+  <Head>
+    <meta head-key="description" name="description" content="Default description">
+  </Head>
   <div>
     <header>
-      <h1>Home</h1>
       <nav>
-        <div>
-          <Link :href="route('home')">Home</Link>
-          <Link :href="route('about')">About</Link>
+        <div class="space-x-6">
+          <!-- <Link ... preserve-scroll ...>  остаемся на том же месте прокрутки страницы-->
+          <Link :href="route('home')" class="nav-link">Home</Link>
         </div>
+        <div class="space-x-6">
+          <!-- <Link ... preserve-scroll ...>  остаемся на том же месте прокрутки страницы-->
+            <Link :href="route('register')" class="nav-link">Register</Link>
+        </div>
+        
       </nav>
     </header>
 
-    <main>
+    <main class="p-4">
       <slot></slot>
     </main>
   </div>
