@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+min-width - допустим sm - тоесть больше 640 пикселей стили "такие"
+@sm	640
+@md	768
+@lg	1024
+@xl	1280
+@2xl 1536
+// мы же идем другим путем, в обратную сторону
+*/
+@layer components {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+/* fix */
+
+.multiselect__input {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+.grid-table-header {
+  font-weight: 500;
+}
+
+.grid-table-link span {
+  display: none;
+}
+
+.grid-table-adaptive-cell .cell-title {
+  display: none;
+}
+
+/* repeat(6, fit-content(100%)) 1fr 54px */
+.grid-cols-viro-8 {
+  grid-template-columns: repeat(7, 1fr) 54px;
+}
+
+.grid-cols-viro-8 .grid-table-adaptive-cell {
+  grid-template-columns: 1fr;
+}
+
+
+.grid-cols-viro-7 {
+  grid-template-columns: repeat(6, 1fr) 54px;
+}
+
+.grid-cols-viro-7 .grid-table-adaptive-cell {
+  grid-template-columns: 1fr;
+}
+
+
+.grid-cols-viro-6 {
+  grid-template-columns: repeat(5, 1fr) 54px;
+}
+
+.grid-cols-viro-6 .grid-table-adaptive-cell {
+  grid-template-columns: 1fr;
+}
+
+
+.grid-cols-viro-5 {
+  grid-template-columns: repeat(4, 1fr) 54px;
+}
+
+.grid-cols-viro-5 .grid-table-adaptive-cell {
+  grid-template-columns: 1fr;
+}
+
+
+
+.grid-cols-viro-4 {
+  grid-template-columns: repeat(3, 1fr) 54px;
+}
+
+.grid-cols-viro-4 .grid-table-adaptive-cell {
+  grid-template-columns: 1fr;
+}
+
+
+.grid-cols-viro-3 {
+  grid-template-columns: repeat(2, 1fr) 54px;
+}
+
+.grid-cols-viro-3 .grid-table-adaptive-cell {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 1280px) {
+  .grid-cols-viro-8 {
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid #283655;
+    padding-bottom: 5px;
+  }
+
+  .grid-cols-viro-8.grid-table-header {
+    display: none;
+  }
+
+  .grid-cols-viro-8 .grid-table-adaptive-cell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-viro-8 .cell-title {
+    display: grid;
+  }
+
+  .grid-cols-viro-8 .grid-table-link span {
+    display: flex;
+  }
+
+
+
+
+  .grid-cols-viro-7 {
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid #283655;
+    padding-bottom: 5px;
+  }
+
+  .grid-cols-viro-7.grid-table-header {
+    display: none;
+  }
+
+  .grid-cols-viro-7 .grid-table-adaptive-cell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-viro-7 .cell-title {
+    display: grid;
+  }
+
+  .grid-cols-viro-7 .grid-table-link span {
+    display: flex;
+  }
+
+
+
+  .grid-cols-viro-6 {
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid #283655;
+    padding-bottom: 5px;
+  }
+
+  .grid-cols-viro-6.grid-table-header {
+    display: none;
+  }
+
+  .grid-cols-viro-6 .grid-table-adaptive-cell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-viro-6 .cell-title {
+    display: grid;
+  }
+
+  .grid-cols-viro-6 .grid-table-link span {
+    display: flex;
+  }
+
+
+
+}
+
+@media (max-width: 768px) {
+
+
+  .grid-cols-viro-5 {
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid #283655;
+    padding-bottom: 5px;
+  }
+
+  .grid-cols-viro-5.grid-table-header {
+    display: none;
+  }
+
+  .grid-cols-viro-5 .grid-table-adaptive-cell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-viro-5 .cell-title {
+    display: grid;
+  }
+
+  .grid-cols-viro-5 .grid-table-link span {
+    display: flex;
+  }
+
+
+  .grid-cols-viro-4 {
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid #283655;
+    padding-bottom: 5px;
+  }
+
+  .grid-cols-viro-4.grid-table-header {
+    display: none;
+  }
+
+  .grid-cols-viro-4 .grid-table-adaptive-cell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-viro-4 .cell-title {
+    display: grid;
+  }
+
+  .grid-cols-viro-4 .grid-table-link span {
+    display: flex;
+  }
+
+
+  .grid-cols-viro-3 {
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid #283655;
+    padding-bottom: 5px;
+  }
+
+  .grid-cols-viro-3.grid-table-header {
+    display: none;
+  }
+
+  .grid-cols-viro-3 .grid-table-adaptive-cell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-cols-viro-3 .cell-title {
+    display: grid;
+  }
+
+  .grid-cols-viro-3 .grid-table-link span {
+    display: flex;
+  }
+
+}
