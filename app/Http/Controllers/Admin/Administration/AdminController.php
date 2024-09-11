@@ -22,7 +22,7 @@ class AdminController extends Controller
   public function index(Request $request)
   {
 
-    $admins =  User::where('isAdmin', '=', '1')->when($request->search, function ($query) use ($request) {
+    $admins =  User::where('is_admin', '=', '1')->when($request->search, function ($query) use ($request) {
       $query->where('surname', 'like', '%' . $request->search . '%');
     })->paginate(10)->withQueryString();
 
@@ -68,7 +68,7 @@ class AdminController extends Controller
     $admin->viro_dolgnost = $request->viro_dolgnost;
     $admin->phone = $request->phone;
 
-    $admin->isAdmin = true;
+    $admin->is_admin = true;
     $admin->email_verified_at = date('Y-m-d H:i:s');
     $admin->email = $request->email;
     $admin->password = Hash::make($request->password);

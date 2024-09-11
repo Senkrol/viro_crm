@@ -13,12 +13,14 @@
     <Section>
 
         <GridTableHeader
-          :headers="['ID', 'Наименование','Регион']" />
+          :headers="['Фамилия','Имя','Отчество','Округ/Район']" />
         <GridTableLine v-for="regionalAdmin in regionalAdmins.data" :key="regionalAdmin.id" :values="[
-          ['ID', regionalAdmin.id],
-          ['Наименование', regionalAdmin.district_title],
-          ['Регион', regionalAdmin.region_title],
-        ]" :routeEdit="route('admin.statistics.regional.admins.edit', { district: district.id })" />
+          ['ID', regionalAdmin.surname],
+          ['ID', regionalAdmin.name],
+          ['ID', regionalAdmin.patronymic],
+          ['ID', regionalAdmin.district_title],
+          
+        ]" :routeEdit="route('admin.statistics.regional.admin.edit', { regionalAdmin: regionalAdmin.id })" />
     
     </Section>
 

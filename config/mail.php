@@ -48,7 +48,7 @@ return [
       'timeout' => null,
       'from' => [
         'address' => 'viro@viro.edu.ru',
-        'name' => 'АОУ11 ВО ДПО «ВИРО»',
+        'name' => 'АОУ ВО ДПО «ВИРО»',
       ],
       'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
     ],

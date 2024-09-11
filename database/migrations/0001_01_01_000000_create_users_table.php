@@ -20,7 +20,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password'); 
 
-            $table->boolean('isAdmin')->default(0);
+            $table->boolean('is_admin')->default(0);
+            $table->boolean('admin_type')->default(0);
             $table->string('possibilitys')->default('user');  // разрешения, в основном для админов
             
             $table->string('phone')->nullable();

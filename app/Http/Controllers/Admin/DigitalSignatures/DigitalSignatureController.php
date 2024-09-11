@@ -30,7 +30,7 @@ class DigitalSignatureController extends Controller
 
   public function create()
   {
-    $users = User::select('id', 'name')->where('isAdmin', 1)->get();
+    $users = User::select('id', 'name')->where('is_admin', 1)->get();
     $isystems = DigitalSignaturesIsystem::select('id', 'title')->get();
 
     return Inertia::render('Admin/DigitalSignatures/DigitalSignatureCreateOrUpdate', ['users' => $users, 'isystems' => $isystems]);
@@ -60,7 +60,7 @@ class DigitalSignatureController extends Controller
   public function edit(DigitalSignature $digitalSignature): Response
   {
 
-    $uses = User::select('id', 'name')->where('isAdmin', 1)->get();
+    $uses = User::select('id', 'name')->where('is_admin', 1)->get();
     $isystems = DigitalSignaturesIsystem::select('id', 'title')->get();
 
     return Inertia::render('Admin/DigitalSignatures/DigitalSignatureCreateOrUpdate', [

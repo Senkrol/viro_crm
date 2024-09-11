@@ -18,11 +18,11 @@ class redirectAdmin
   {
 
     if (Auth::guard($guard)->check()) {
-      if (Auth::user()->isAdmin  != 1) {
+      if (Auth::user()->is_admin  != 1) {
         return redirect()->route('home');
       }
 
-      if (Auth::user()->isAdmin  == 1) {
+      if (Auth::user()->is_admin  == 1) {
         return $next($request);
       }
       

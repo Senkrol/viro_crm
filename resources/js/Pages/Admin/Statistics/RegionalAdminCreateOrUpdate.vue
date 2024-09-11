@@ -39,13 +39,15 @@
           <p>Электронная почта: {{ organizationInfo.org_email }}</p>
         </div>
 
-        <div v-if="props.admin">
-          Обновить пароль
+        <div v-if="props.regionalAdmin" class="mb-4 mt-4">
+
+          <Checkbox name="passwordUpdate" v-model:checked="form.passwordUpdate" id="remember"
+            :label="'Сгенерировать новый пароль и отправить уведомление'" />
         </div>
 
 
         <div class="grid grid-cols-2 gap-2">
-          <DeleteButton @click.prevent="deleteEvent(admin.id)" :disabled="!props.admin">
+          <DeleteButton @click.prevent="deleteEvent(regionalAdmin.id)" :disabled="!props.regionalAdmin">
             Удалить
           </DeleteButton>
           <SubmitButton :disabled="form.processing">
@@ -70,6 +72,7 @@ import FormSelectInput from '@/Components/Form/SelectInput.vue';
 
 import SubmitButton from '@/Components/Form/SubmitButton.vue'
 import DeleteButton from '@/Components/Form/DeleteButton.vue'
+import Checkbox from '@/Components/Checkbox/Checkbox.vue';
 
 import { useForm, router } from '@inertiajs/vue3';
 
@@ -78,18 +81,22 @@ import { watch, ref } from 'vue';
 
 
 const props = defineProps({
+  regionalAdmin: Object,
   districts: Object,
-  admin: Object,
-  organizations: Object
+  organizations: Object,
+  organization: Object,
 });
 
 const form = useForm({
-  surname: props.type ? props.type.surname : "",
-  name: props.type ? props.type.name : "",
-  patronymic: props.type ? props.type.patronymic : "",
+  id: props.regionalAdmin ? props.regionalAdmin.id : null,
+  surname: props.regionalAdmin ? props.regionalAdmin.surname : "",
+  name: props.regionalAdmin ? props.regionalAdmin.name : "",
+  patronymic: props.regionalAdmin ? props.regionalAdmin.patronymic : "",
 
-  organization_district_id: props.admin ? props.districts.find(option => option.id === props.admin.organization_district_id) : [],
-  organization_id: props.admin ? props.organizations.find(option => option.id === props.admin.organization_id) : [],
+  organization_district_id: props.regionalAdmin ? props.districts.find(option => option.id === props.regionalAdmin.organization_district_id) : [],
+  organization_id: props.regionalAdmin ? props.organizations.find(option => option.id === props.regionalAdmin.organization_id) : [],
+
+  passwordUpdate: false
 })
 
 let optionsOrganizations = props.organizations;
@@ -116,7 +123,7 @@ watch(
   }
 )
 
-let organizationInfo = ref(false);
+let organizationInfo = props.organization ? ref(props.organization) : ref(false);
 
 watch(
   () => form.organization_id,

@@ -28,7 +28,7 @@ class RegionalAdminAccess extends Mailable
   public function envelope(): Envelope
   {
     return new Envelope(
-      subject: 'Regional Admin Access',
+      subject: 'Предоставление доступа',
     );
   }
 
