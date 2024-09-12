@@ -31,7 +31,9 @@ return new class extends Migration
             $table->string('short_name');
             $table->boolean('village_city');
             $table->string('postal_address');
-            $table->string('director_fio');
+            $table->string('director_surname');
+            $table->string('director_name');
+            $table->string('director_patronymic');
             $table->string('inn');
             $table->string('org_phone');
             $table->string('org_email');

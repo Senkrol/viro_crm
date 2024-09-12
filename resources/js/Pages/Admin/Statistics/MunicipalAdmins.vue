@@ -1,9 +1,9 @@
 <template>
   <AdminLayout>
 
-    <PageHeader :title="'Региональные координаторы'">
+    <PageHeader :title="'Муниципальные координаторы'">
 
-      <Link :href="route('admin.statistics.regional.admin.create')"
+      <Link :href="route('admin.statistics.municipal.admin.create')"
         class="flex justify-center rounded bg-viro-main text-white px-6 py-2 font-medium text-gray hover:bg-opacity-90">
       Создать
       </Link>
@@ -14,17 +14,17 @@
 
         <GridTableHeader
           :headers="['Фамилия','Имя','Отчество','Округ/Район']" />
-        <GridTableLine v-for="regionalAdmin in regionalAdmins.data" :key="regionalAdmin.id" :values="[
-          ['ID', regionalAdmin.surname],
-          ['ID', regionalAdmin.name],
-          ['ID', regionalAdmin.patronymic],
-          ['ID', regionalAdmin.district_title],
+        <GridTableLine v-for="municipalAdmin in municipalAdmins.data" :key="municipalAdmin.id" :values="[
+          ['ID', municipalAdmin.surname],
+          ['ID', municipalAdmin.name],
+          ['ID', municipalAdmin.patronymic],
+          ['ID', municipalAdmin.district_title],
           
-        ]" :routeEdit="route('admin.statistics.regional.admin.edit', { regionalAdmin: regionalAdmin.id })" />
+        ]" :routeEdit="route('admin.statistics.municipal.admin.edit', { municipalAdmin: municipalAdmin.id })" />
     
     </Section>
 
-    <PaginationLinks :paginator="props.regionalAdmins"></PaginationLinks>
+    <PaginationLinks :paginator="props.municipalAdmins"></PaginationLinks>
   </AdminLayout>
 
 </template>
@@ -44,7 +44,7 @@ import PaginationLinks from '@/Components/Page/PaginationLinks.vue';
 
 import { Link, router } from '@inertiajs/vue3';
 const props = defineProps({
-  regionalAdmins: Object
+  municipalAdmins: Object
 });
 
 

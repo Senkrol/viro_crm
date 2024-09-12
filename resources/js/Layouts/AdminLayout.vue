@@ -139,7 +139,7 @@ if (route().current().includes('admin.statistics')) {
               </SidebarGroupLink>
 
             </div>
-            
+
 
             <div v-if="adminPossibilitys.includes('statistics_show')">
               <SidebarGroup :title="'Статистика'" @click="LinkGroup = (LinkGroup === 'Statistics' ? '' : 'Statistics')"
@@ -149,12 +149,12 @@ if (route().current().includes('admin.statistics')) {
 
               <div v-if="LinkGroup == 'Statistics'" @click="LinkGroup = 'Statistics'">
 
-                <SidebarGroupLink :href="route('admin.statistics.regional.admins.index')"
-                  :active="route().current().includes('admin.statistics.regional.admin')">
-                  Региональные координаторы
+                <SidebarGroupLink :href="route('admin.statistics.municipal.admins.index')"
+                  :active="route().current().includes('admin.statistics.municipal.admin')">
+                  Муниципальные координаторы
                 </SidebarGroupLink>
 
-               
+
 
               </div>
 

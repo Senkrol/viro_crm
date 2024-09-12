@@ -52,8 +52,14 @@
           :message="form.errors.postal_address">
         </FormTextInput>
 
-        <FormTextInput :title="'Фио директора'" id="director_fio" v-model="form.director_fio"
-          :message="form.errors.director_fio">
+        <FormTextInput :title="'Фамилия руководителя'" id="director_surname" v-model="form.director_surname"
+          :message="form.errors.director_surname">
+        </FormTextInput>
+        <FormTextInput :title="'Имя руководителя'" id="director_name" v-model="form.director_name"
+          :message="form.errors.director_name">
+        </FormTextInput>
+        <FormTextInput :title="'Отчество руководителя'" id="director_patronymic" v-model="form.director_patronymic"
+          :message="form.errors.director_patronymic">
         </FormTextInput>
 
 
@@ -65,7 +71,7 @@
         </FormTextInput>
 
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mt-4">
           <DeleteButton @click.prevent="deleteEvent(organization.id)" :disabled="!props.organization">
             Удалить
           </DeleteButton>
@@ -123,7 +129,11 @@ const form = useForm({
   village_city: props.organization ? optionsVillageCity.find(option => option.id === props.organization.village_city) : [],
 
   postal_address: props.organization ? props.organization.postal_address : "",
-  director_fio: props.organization ? props.organization.director_fio : "",
+
+  director_surname: props.organization ? props.organization.director_surname : "",
+  director_name: props.organization ? props.organization.director_name : "",
+  director_patronymic: props.organization ? props.organization.director_patronymic : "",
+
   inn: props.organization ? props.organization.inn : "",
   org_phone: props.organization ? props.organization.org_phone : "",
   org_email: props.organization ? props.organization.org_email : "",

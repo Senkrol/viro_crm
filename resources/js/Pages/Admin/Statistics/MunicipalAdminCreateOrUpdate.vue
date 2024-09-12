@@ -5,16 +5,8 @@
       <form @submit.prevent="submit">
 
         <FormHeader>
-          Региональный координатор
+          Муниципальный координатор
         </FormHeader>
-
-
-        <FormTextInput :title="'Фамилия'" id="surname" v-model="form.surname" :message="form.errors.surname" />
-
-        <FormTextInput :title="'Имя'" id="name" v-model="form.name" :message="form.errors.name" />
-
-        <FormTextInput :title="'Отчество'" id="patronymic" v-model="form.patronymic"
-          :message="form.errors.patronymic" />
 
         <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'" v-model="form.organization_district_id"
           :message="form.errors.organization_district_id" :options="props.districts" :trackBy="'id'"
@@ -33,13 +25,13 @@
             Сведения о выбранной организации
           </FormHeader>
           <p>Краткое наименование: {{ organizationInfo.short_name }}</p>
-          <p>Руководитель: {{ organizationInfo.director_fio }}</p>
+          <p>Руководитель: {{ organizationInfo.director_surname }} {{ organizationInfo.director_name }} {{ organizationInfo.director_patronymic }}</p>
           <p>Адрес: {{ organizationInfo.postal_address }}</p>
           <p>Телефон: {{ organizationInfo.org_phone }}</p>
           <p>Электронная почта: {{ organizationInfo.org_email }}</p>
         </div>
 
-        <div v-if="props.regionalAdmin" class="mb-4 mt-4">
+        <div v-if="props.municipalAdmin" class="mb-4 mt-4">
 
           <Checkbox name="passwordUpdate" v-model:checked="form.passwordUpdate" id="remember"
             :label="'Сгенерировать новый пароль и отправить уведомление'" />
@@ -47,7 +39,7 @@
 
 
         <div class="grid grid-cols-2 gap-2">
-          <DeleteButton @click.prevent="deleteEvent(regionalAdmin.id)" :disabled="!props.regionalAdmin">
+          <DeleteButton @click.prevent="deleteEvent(municipalAdmin.id)" :disabled="!props.municipalAdmin">
             Удалить
           </DeleteButton>
           <SubmitButton :disabled="form.processing">
@@ -81,20 +73,17 @@ import { watch, ref } from 'vue';
 
 
 const props = defineProps({
-  regionalAdmin: Object,
+  municipalAdmin: Object,
   districts: Object,
   organizations: Object,
   organization: Object,
 });
 
 const form = useForm({
-  id: props.regionalAdmin ? props.regionalAdmin.id : null,
-  surname: props.regionalAdmin ? props.regionalAdmin.surname : "",
-  name: props.regionalAdmin ? props.regionalAdmin.name : "",
-  patronymic: props.regionalAdmin ? props.regionalAdmin.patronymic : "",
-
-  organization_district_id: props.regionalAdmin ? props.districts.find(option => option.id === props.regionalAdmin.organization_district_id) : [],
-  organization_id: props.regionalAdmin ? props.organizations.find(option => option.id === props.regionalAdmin.organization_id) : [],
+  id: props.municipalAdmin ? props.municipalAdmin.id : null,
+  
+  organization_district_id: props.municipalAdmin ? props.districts.find(option => option.id === props.municipalAdmin.organization_district_id) : [],
+  organization_id: props.municipalAdmin ? props.organizations.find(option => option.id === props.municipalAdmin.organization_id) : [],
 
   passwordUpdate: false
 })
@@ -107,7 +96,7 @@ watch(
     if (form.organization_district_id && form.organization_district_id.id) {
 
       axios
-        .post(route('admin.statistics.regional.admin.getorganizationlist', {
+        .post(route('admin.statistics.municipal.admin.getorganizationlist', {
           region: 1,
           district: form.organization_district_id.id,
           type: 7,
@@ -130,7 +119,7 @@ watch(
   () => {
     if (form.organization_id && form.organization_id.id) {
       axios
-        .post(route('admin.statistics.regional.admin.getorganizationinfo', {
+        .post(route('admin.statistics.municipal.admin.getorganizationinfo', {
           organization_id: form.organization_id.id
         }))
         .then((response) => {
@@ -145,14 +134,14 @@ watch(
 
 
 const submit = () => {
-  form.post(route(form.id ? 'admin.statistics.regional.admin.update' : 'admin.statistics.regional.admin.store'), {
+  form.post(route(form.id ? 'admin.statistics.municipal.admin.update' : 'admin.statistics.municipal.admin.store'), {
     // onError: () => form.reset("title"),
   });
 }
 
 const deleteEvent = (id) => {
   if (confirm("Вы уверены, что хотите отправить это в корзину?")) {
-    router.delete(route('admin.statistics.regional.admin.delete', id))
+    router.delete(route('admin.statistics.municipal.admin.delete', id))
   }
 };
 

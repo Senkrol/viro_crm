@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegionalAdminAccessUpdate extends Mailable
+class MunicipalAdminAccessUpdate extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -37,7 +37,7 @@ class RegionalAdminAccessUpdate extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.admin.statistics.RegionalAdminAccessUpdate',
+            markdown: 'mail.admin.statistics.MunicipalAdminAccessUpdate',
         );
     }
 

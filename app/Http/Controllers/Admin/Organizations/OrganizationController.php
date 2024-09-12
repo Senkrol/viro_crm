@@ -61,7 +61,9 @@ class OrganizationController extends Controller
     $organization->village_city = $request->village_city["id"];
 
     $organization->postal_address = $request->postal_address;
-    $organization->director_fio = $request->director_fio;
+    $organization->director_surname = $request->director_surname;
+    $organization->director_name = $request->director_name;
+    $organization->director_patronymic = $request->director_patronymic;
     $organization->inn = $request->inn;
     $organization->org_phone = $request->org_phone;
     $organization->org_email = $request->org_email;
@@ -106,7 +108,11 @@ class OrganizationController extends Controller
     $organization->village_city = $request->village_city["id"];
 
     $organization->postal_address = $request->postal_address;
-    $organization->director_fio = $request->director_fio;
+
+    $organization->director_surname = $request->director_surname;
+    $organization->director_name = $request->director_name;
+    $organization->director_patronymic = $request->director_patronymic;
+
     $organization->inn = $request->inn;
     $organization->org_phone = $request->org_phone;
     $organization->org_email = $request->org_email;
@@ -121,8 +127,6 @@ class OrganizationController extends Controller
     $organization->delete();
     return redirect()->route('admin.organizations.organization.index')->with('success', 'Организация «' . $organization->short_name . '» удалена!');
   }
-
-
 
 
   public function getlist(Request $request)
