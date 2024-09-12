@@ -27,7 +27,7 @@
           :labelBy="'region_title'">
         </FormSelectInput>
 
-        <FormSelectInput :title="'Область'" :id="'organization_district_id'" v-model="form.organization_district_id"
+        <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'" v-model="form.organization_district_id"
           :message="form.errors.organization_district_id" :options="optionsDistrict" :trackBy="'id'"
           :labelBy="'district_title'">
         </FormSelectInput>

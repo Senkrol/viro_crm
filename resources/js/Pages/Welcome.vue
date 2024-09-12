@@ -86,13 +86,13 @@ onMounted(() => {
 
 
 onBeforeUnmount(() => {
-  /*
-  window.removeEventListener('DOMMouseScroll', handleMouseWheelDOM); // Mozilla Firefox
+  
+ // window.removeEventListener('DOMMouseScroll', handleMouseWheelDOM); // Mozilla Firefox
   window.removeEventListener('mousewheel', handleMouseWheel, { passive: false });  // Other browsers
 
-  window.removeEventListener('touchstart', touchStart); // mobile devices
-  window.removeEventListener('touchmove', touchMove); // mobile devices
-  */
+  //window.removeEventListener('touchstart', touchStart); // mobile devices
+ // window.removeEventListener('touchmove', touchMove); // mobile devices
+  
 })
 </script>
 <template>
