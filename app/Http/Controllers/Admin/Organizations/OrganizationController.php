@@ -16,9 +16,12 @@ use Inertia\Response;
 class OrganizationController extends Controller
 {
 
-
-  public function index()
+  public function index(Request $request)
   {
+    $regions = OrganizationsRegion::get();
+
+    $districts = ($request->region) ? $districts = OrganizationsDistrict::where('organizations_districts.organization_region_id', '=', (int)$request->region)->get() : [];
+
     $organizations = Organization::select(
       'organizations.id',
       'organizations.short_name',
@@ -28,9 +31,26 @@ class OrganizationController extends Controller
     )
       ->leftJoin('organizations_regions', 'organizations.organization_region_id', '=', 'organizations_regions.id')
       ->leftJoin('organizations_districts', 'organizations.organization_district_id', '=', 'organizations_districts.id')
+      ->when($request->region, function ($organizations) use ($request) {
+        $organizations->where('organizations.organization_region_id', '=', (int)$request->region);
+      })
+      ->when($request->district, function ($organizations) use ($request) {
+        $organizations->where('organizations.organization_district_id', '=', (int)$request->district);
+      })
+      ->when($request->search, function ($organizations) use ($request) {
+        $organizations->where('short_name', 'like', '%' . $request->search . '%');
+      })
       ->paginate(10)->withQueryString();
 
-    return inertia('Admin/Organizations/Organizations', ['organizations' => $organizations]);
+
+    return inertia('Admin/Organizations/Organizations', [
+      'organizations' => $organizations,
+      'regions' => $regions,
+      'districts' => $districts,
+      'searchTerm' => $request->search,
+      'searchRegion' => (int)$request->region,
+      'searchDistrict' => (int)$request->district
+    ]);
   }
 
 
@@ -39,7 +59,7 @@ class OrganizationController extends Controller
     $regions = OrganizationsRegion::get();
     $districts = []; // определяется в процессе, но оставить надо
     $founders = OrganizationsFounder::select('id', 'founder_title')->get();
-    $types = OrganizationsType::select('id', 'type_title')->get();
+    $types = OrganizationsType::get();
 
     return Inertia::render('Admin/Organizations/OrganizationCreateOrUpdate', ['regions' => $regions, 'districts' => $districts, 'founders' => $founders, 'types' => $types]);
   }

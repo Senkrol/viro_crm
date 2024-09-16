@@ -21,10 +21,11 @@ class AdminController extends Controller
 {
   public function index(Request $request)
   {
-
-    $admins =  User::where('is_admin', '=', '1')->when($request->search, function ($query) use ($request) {
-      $query->where('surname', 'like', '%' . $request->search . '%');
-    })->paginate(10)->withQueryString();
+    $admins =  User::where('is_admin', '=', '1')
+    ->when($request->search, function ($admins) use ($request) {
+      $admins->where('surname', 'like', '%' . $request->search . '%');
+    })
+    ->paginate(10)->withQueryString();
 
     return inertia('Admin/Administration/Admins', ['admins' => $admins, 'searchTerm' => $request->search]);
   }

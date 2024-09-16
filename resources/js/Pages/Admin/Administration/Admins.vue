@@ -9,13 +9,11 @@
       </Link>
     </PageHeader>
 
-    <section>
-      <div class="flex mb-4 p-4 bg-white">
+    <Section class="mb-2">
         <div>
           <input type="search" ref="searchFocus" placeholder="Поиск" v-model="search">
         </div>
-      </div>
-    </section>
+    </Section>
 
     <Section>
    
@@ -59,7 +57,7 @@ const props = defineProps({
   searchTerm: String,
 });
 
-const search = ref(props.searchTerm);
+const search = props.searchTerm ? ref(props.searchTerm) : ref('');
 
 
 watch(

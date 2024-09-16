@@ -1,7 +1,7 @@
 <template>
   <AdminLayout>
     <div>
-      чето админское
+      Администратор
     </div>
   </AdminLayout>
 </template>
