@@ -139,24 +139,27 @@ if (route().current().includes('admin.statistics')) {
               </SidebarGroupLink>
 
             </div>
+          </div>
+
+          <div v-if="adminPossibilitys.includes('statistics_show')">
+            <SidebarGroup :title="'Статистика'" @click="LinkGroup = (LinkGroup === 'Statistics' ? '' : 'Statistics')"
+              :active="LinkGroup == 'Statistics' ? true : false" :icon="['fas', 'chart-simple']">
+            </SidebarGroup>
+
+            <div v-if="LinkGroup == 'Statistics'" @click="LinkGroup = 'Statistics'">
 
 
-            <div v-if="adminPossibilitys.includes('statistics_show')">
-              <SidebarGroup :title="'Статистика'" @click="LinkGroup = (LinkGroup === 'Statistics' ? '' : 'Statistics')"
-                :active="LinkGroup == 'Statistics' ? true : false" :icon="['fas', 'chart-simple']">
+              <SidebarGroupLink v-if="adminPossibilitys.includes('statistics_mubicipal_admins')"
+                :href="route('admin.statistics.municipal.admins.index')"
+                :active="route().current().includes('admin.statistics.municipal.admin')">
+                Муниципальные координаторы
+              </SidebarGroupLink>
 
-              </SidebarGroup>
-
-              <div v-if="LinkGroup == 'Statistics'" @click="LinkGroup = 'Statistics'">
-
-                <SidebarGroupLink :href="route('admin.statistics.municipal.admins.index')"
-                  :active="route().current().includes('admin.statistics.municipal.admin')">
-                  Муниципальные координаторы
-                </SidebarGroupLink>
-
-
-
-              </div>
+              <SidebarGroupLink v-if="adminPossibilitys.includes('statistics_organizations_admins')"
+                :href="route('admin.statistics.organizations.admins.index')"
+                :active="route().current().includes('admin.statistics.organizations.admin')">
+                Руководители организаций
+              </SidebarGroupLink>
 
             </div>
           </div>
@@ -170,6 +173,7 @@ if (route().current().includes('admin.statistics')) {
         <div class="flex flex-grow items-center justify-between py-4 md:px-6 2xl:px-11 lg:justify-end  px-4 ">
           <font-awesome-icon @click="navigationShow = !navigationShow" class="relative flex items-center rounded-sm px-4 py-2 duration-300 ease-in-out border hover:border-viro-main
       lg:hidden" :icon="['fas', 'bars']" />
+
 
           <NavLink :href="route('logout')" method="post" as="button">
             Выйти

@@ -4,38 +4,48 @@ namespace App\Http\Controllers\Admin\Statistic;
 
 use App\Models\User;
 
+use Inertia\Inertia;
+use Inertia\Response;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Admin\Organizations\Organization;
+
 use App\Mail\Admin\Statistics\MunicipalAdminAccess;
 use App\Mail\Admin\Statistics\MunicipalAdminAccessUpdate;
-use Illuminate\Support\Facades\Mail;
-
-use App\Models\Admin\Organizations\Organization;
 use App\Models\Admin\Organizations\OrganizationsDistrict;
-use Illuminate\Support\Facades\Hash;
 
-use Inertia\Inertia;
-use Inertia\Response;
-
-class StatisticMunicipalAdminController extends Controller
+class StatisticOrganizationAdminController extends Controller
 {
+
   public function index()
   {
-    $municipalAdmins = User::select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'organizations_districts.district_title')
-      ->where('admin_type', '=', '2')
+
+    $admin = Auth::user();
+    
+    $organizationsAdmins = User::select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'organizations_districts.district_title')
+      ->where('admin_type', '=', '3')
       ->leftJoin('organizations_districts', 'users.organization_district_id', '=', 'organizations_districts.id')
+      ->where('organization_district_id', '=', $admin->organization_district_id)
       ->paginate(10)->withQueryString();
 
-    return inertia('Admin/Statistics/MunicipalAdmins', ['municipalAdmins' => $municipalAdmins]);
+    return inertia('Admin/Statistics/OrganizationsAdmins', ['organizationsAdmins' => $organizationsAdmins]);
   }
 
   public function create()
   {
     // взят 35й регион
-    $districts = OrganizationsDistrict::select('id', 'district_title')->where('organization_region_id', '=', '1')->get();
-    $organizations = [];
-    return inertia('Admin/Statistics/MunicipalAdminCreateOrUpdate', ['districts' => $districts, 'organizations' => $organizations]);
+    //$districts = OrganizationsDistrict::select('id', 'district_title')->where('organization_region_id', '=', '1')->get();
+    $admin = Auth::user();
+
+    $organizations = Organization::select('id', 'short_name')->where('organization_district_id','=',$admin->organization_district_id)->get();
+    
+   
+    return inertia('Admin/Statistics/OrganizationAdminCreateOrUpdate', ['organizations' => $organizations]);
   }
 
 
