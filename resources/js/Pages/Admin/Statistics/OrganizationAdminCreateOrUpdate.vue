@@ -8,9 +8,8 @@
           Руководитель организации
         </FormHeader>
 
-        <FormSelectInput :title="'Учреждение'" :id="'organization_id'" v-model="form.organization_id"
-          :message="form.errors.organization_id" :options="props.organizations" :trackBy="'id'"
-          :labelBy="'short_name'">
+        <FormSelectInput v-if="!props.organizationAdmin" :title="'Учреждение'" :id="'organization_id'" v-model="form.organization_id"
+          :message="form.errors.organization_id" :options="props.organizations" :trackBy="'id'" :labelBy="'short_name'">
         </FormSelectInput>
 
         <div v-if="organizationInfo" class="mb-4">
@@ -25,7 +24,7 @@
           <p>Электронная почта: {{ organizationInfo.org_email }}</p>
         </div>
 
-        <div v-if="props.municipalAdmin" class="mb-4 mt-4">
+        <div v-if="props.organizationAdmin" class="mb-4 mt-4">
 
           <Checkbox name="passwordUpdate" v-model:checked="form.passwordUpdate" id="remember"
             :label="'Сгенерировать новый пароль и отправить уведомление'" />
@@ -33,7 +32,7 @@
 
 
         <div class="grid grid-cols-2 gap-2">
-          <DeleteButton @click.prevent="deleteEvent(municipalAdmin.id)" :disabled="!props.municipalAdmin">
+          <DeleteButton @click.prevent="deleteEvent(organizationAdmin.id)" :disabled="!props.organizationAdmin">
             Удалить
           </DeleteButton>
           <SubmitButton :disabled="form.processing">
@@ -67,33 +66,32 @@ import { watch, ref } from 'vue';
 
 
 const props = defineProps({
-  municipalAdmin: Object,
+  organizationAdmin: Object,
   organizations: Object,
   organization: Object,
 });
 
 const form = useForm({
-  id: props.municipalAdmin ? props.municipalAdmin.id : null,
+  id: props.organizationAdmin ? props.organizationAdmin.id : null,
 
-  organization_id: props.municipalAdmin ? props.organizations.find(option => option.id === props.municipalAdmin.organization_id) : [],
+  organization_id: props.organizationAdmin ? props.organizations.find(option => option.id === props.organizationAdmin.organization_id) : [],
 
   passwordUpdate: false
 })
 
 
 
-let organizationInfo = props.organization ? ref(props.organization) : ref(false);
+let organizationInfo = ref(props.organization ? props.organization : false);
 
 watch(
   () => form.organization_id,
   () => {
     if (form.organization_id && form.organization_id.id) {
       axios
-        .post(route('admin.statistics.municipal.admin.getorganizationinfo', {
+        .post(route('admin.statistics.organization.admin.getorganizationinfo', {
           organization_id: form.organization_id.id
         }))
         .then((response) => {
-          console.log(response);
           organizationInfo.value = response.data;
         })
     } else {
@@ -104,14 +102,14 @@ watch(
 
 
 const submit = () => {
-  form.post(route(form.id ? 'admin.statistics.municipal.admin.update' : 'admin.statistics.municipal.admin.store'), {
+  form.post(route(form.id ? 'admin.statistics.organization.admin.update' : 'admin.statistics.organization.admin.store'), {
     // onError: () => form.reset("title"),
   });
 }
 
 const deleteEvent = (id) => {
   if (confirm("Вы уверены, что хотите отправить это в корзину?")) {
-    router.delete(route('admin.statistics.municipal.admin.delete', id))
+    router.delete(route('admin.statistics.organization.admin.delete', id))
   }
 };
 
