@@ -10,7 +10,7 @@
 
     </PageHeader>
 
-    <Section class="mb-2 grid grid-cols-3 gap-4">
+    <div class="mb-2 grid grid-cols-3 gap-4">
 
       <FormSelectInput :title="'Регион'" :id="'organization_region_id'" v-model="region" :options="props.regions"
         :trackBy="'id'" :labelBy="'region_title'">
@@ -23,7 +23,7 @@
       <FormTextInput :type="'search'" :title="'Поиск'" id="search" v-model="search" />
 
 
-    </Section>
+    </div>
 
     <Section>
       <GridTableHeader :headers="['Наименование', 'Регион', 'Область', 'ИНН']" />
@@ -76,7 +76,7 @@ const district = ref(props.searchDistrict ? props.districts.find(option => optio
 let optionsDistrict = props.districts;
 
 watch(
-  search, debounce(() => filter(), 500)
+  search, debounce(() => filter(), 800)
 );
 
 
@@ -99,7 +99,7 @@ watch(
 
 watch(
   () => district.value,
-  () => { filter(); }
+  () => filter()
 )
 
 

@@ -36,7 +36,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="flex flex-col my-2">
+  <div class="flex flex-col my-2 shadow-sm">
 
     <label :for="id" class="block font-medium text-sm text-gray-700">{{ title }}</label>
 

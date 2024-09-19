@@ -61,7 +61,7 @@ const search = props.searchTerm ? ref(props.searchTerm) : ref('');
 
 
 watch(
-  search, debounce((q) => router.get(route('admin.administration.admins.index'), { search: q }), 500)
+  search, debounce((q) => router.get(route('admin.administration.admins.index'), { search: q }), 800)
 );
 
 const searchFocus = ref(null)

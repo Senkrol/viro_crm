@@ -13,7 +13,7 @@
         </FormSelectInput>
 
         <div v-if="organizationInfo" class="mb-4">
-          <FormHeader>
+          <FormHeader v-if="!props.organizationAdmin">
             Сведения о выбранной организации
           </FormHeader>
           <p>Краткое наименование: {{ organizationInfo.short_name }}</p>
@@ -88,7 +88,7 @@ watch(
   () => {
     if (form.organization_id && form.organization_id.id) {
       axios
-        .post(route('admin.statistics.organization.admin.getorganizationinfo', {
+        .post(route('admin.statistics.organizations.admin.getorganizationinfo', {
           organization_id: form.organization_id.id
         }))
         .then((response) => {
@@ -102,14 +102,14 @@ watch(
 
 
 const submit = () => {
-  form.post(route(form.id ? 'admin.statistics.organization.admin.update' : 'admin.statistics.organization.admin.store'), {
+  form.post(route(form.id ? 'admin.statistics.organizations.admin.update' : 'admin.statistics.organizations.admin.store'), {
     // onError: () => form.reset("title"),
   });
 }
 
 const deleteEvent = (id) => {
   if (confirm("Вы уверены, что хотите отправить это в корзину?")) {
-    router.delete(route('admin.statistics.organization.admin.delete', id))
+    router.delete(route('admin.statistics.organizations.admin.delete', id))
   }
 };
 

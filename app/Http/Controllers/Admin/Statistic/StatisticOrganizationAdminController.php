@@ -22,18 +22,36 @@ use App\Models\Admin\Organizations\OrganizationsDistrict;
 class StatisticOrganizationAdminController extends Controller
 {
 
-  public function index()
+  public function index(Request $request)
   {
 
+
     $admin = Auth::user();
-    
+
+    $district_id = $admin->organization_district_id;
+
+    if ($admin->admin_type == 1 && $request->district) {
+      $district_id = $request->district;
+    }
+
+    $districts = OrganizationsDistrict::where('organization_region_id', '=', '1')->get();
+
     $organizationsAdmins = User::select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'organizations.short_name')
       ->where('admin_type', '=', '3')
       ->leftJoin('organizations', 'users.organization_id', '=', 'organizations.id')
-      ->where('organizations.organization_district_id', '=', $admin->organization_district_id)
+      ->where('organizations.organization_district_id', '=', $district_id)
+      ->when($request->search, function ($organizationsAdmins) use ($request) {
+        $organizationsAdmins->where('organizations.short_name', 'LIKE', '%' . $request->search . '%');
+      })
       ->paginate(10)->withQueryString();
 
-    return inertia('Admin/Statistics/OrganizationsAdmins', ['organizationsAdmins' => $organizationsAdmins]);
+    return inertia('Admin/Statistics/OrganizationsAdmins', [
+      'organizationsAdmins' => $organizationsAdmins,
+      'districts' => $districts,
+      'searchDistrict' => (int)$district_id,
+      'searchTerm' => $request->search
+
+    ]);
   }
 
   public function create()
@@ -42,9 +60,9 @@ class StatisticOrganizationAdminController extends Controller
     //$districts = OrganizationsDistrict::select('id', 'district_title')->where('organization_region_id', '=', '1')->get();
     $admin = Auth::user();
 
-    $organizations = Organization::select('id', 'short_name')->where('organization_district_id','=',$admin->organization_district_id)->get();
-    
-   
+    $organizations = Organization::select('id', 'short_name')->where('organization_district_id', '=', $admin->organization_district_id)->get();
+
+
     return inertia('Admin/Statistics/OrganizationAdminCreateOrUpdate', ['organizations' => $organizations]);
   }
 

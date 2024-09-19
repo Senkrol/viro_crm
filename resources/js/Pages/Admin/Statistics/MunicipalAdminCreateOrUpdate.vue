@@ -8,7 +8,8 @@
           Муниципальный координатор
         </FormHeader>
 
-        <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'" v-model="form.organization_district_id"
+        <div v-if="!props.municipalAdmin"> 
+          <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'" v-model="form.organization_district_id"
           :message="form.errors.organization_district_id" :options="props.districts" :trackBy="'id'"
           :labelBy="'district_title'">
         </FormSelectInput>
@@ -18,10 +19,12 @@
           :message="form.errors.organization_id" :options="optionsOrganizations" :trackBy="'id'"
           :labelBy="'short_name'">
         </FormSelectInput>
+        </div>
+     
 
 
         <div v-if="organizationInfo" class="mb-4">
-          <FormHeader>
+          <FormHeader v-if="!props.municipalAdmin">
             Сведения о выбранной организации
           </FormHeader>
           <p>Краткое наименование: {{ organizationInfo.short_name }}</p>
