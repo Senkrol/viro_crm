@@ -16,19 +16,27 @@ min-width - допустим sm - тоесть больше 640 пикселей
     scrollbar-width: none;
   }
 }
+
 /* fix */
 
 .multiselect__input {
   outline: none !important;
   box-shadow: none !important;
 }
+
 .multiselect__tags {
-  min-height: 42px!important;
-  border: 1px solid rgb(209 213 219)!important;
+  min-height: 42px !important;
+  border: 1px solid rgb(209 213 219) !important;
 }
 
-.multiselect__select{
-  top: 3px!important; 
+.multiselect--active>.multiselect__tags {
+  border-color: rgb(99 102 241)!important /* #6366f1 */;
+  box-shadow: 0px 0px 0px 1px rgb(99 102 241);
+}
+
+.multiselect__select {
+  top: 3px !important;
+
 }
 
 .grid-table-header {

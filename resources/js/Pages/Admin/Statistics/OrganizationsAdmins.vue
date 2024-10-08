@@ -10,9 +10,9 @@
 
     </PageHeader>
 
-    <div class="mb-2 grid grid-cols-2 gap-4">
+    <div class="mb-2 grid gap-4" :class="(adminType === 1)? 'grid-cols-2': 'grid-cols-1'" >
 
-      <FormSelectInput :title="'Округ/Район'" :id="'district'" v-model="district" :options="props.districts"
+      <FormSelectInput v-if="adminType === 1" :title="'Округ/Район'" :id="'district'" v-model="district" :options="props.districts"
         :trackBy="'id'" :labelBy="'district_title'">
       </FormSelectInput>
 
@@ -54,9 +54,12 @@ import PaginationLinks from '@/Components/Page/PaginationLinks.vue';
 
 import FormSelectInput from '@/Components/Form/SelectInput.vue';
 import FormTextInput from '@/Components/Form/TextInput.vue';
-import { useForm, Link, router } from '@inertiajs/vue3';
+import { useForm, Link, router, usePage } from '@inertiajs/vue3';
 import { debounce } from "lodash";
 import { ref, watch, onMounted } from "vue";
+
+
+const adminType = usePage().props.auth.user.admin_type;
 
 const props = defineProps({
   organizationsAdmins: Object,

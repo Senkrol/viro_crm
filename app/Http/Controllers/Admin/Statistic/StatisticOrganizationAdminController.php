@@ -18,6 +18,7 @@ use App\Models\Admin\Organizations\Organization;
 use App\Mail\Admin\Statistics\MunicipalAdminAccess;
 use App\Mail\Admin\Statistics\MunicipalAdminAccessUpdate;
 use App\Models\Admin\Organizations\OrganizationsDistrict;
+use App\Models\Admin\Organizations\OrganizationsType;
 
 class StatisticOrganizationAdminController extends Controller
 {
@@ -56,24 +57,25 @@ class StatisticOrganizationAdminController extends Controller
 
   public function create()
   {
-    // взят 35й регион
-    //$districts = OrganizationsDistrict::select('id', 'district_title')->where('organization_region_id', '=', '1')->get();
+
     $admin = Auth::user();
+
+    $districts = OrganizationsDistrict::select('id', 'district_title')->where('organization_region_id', '=', '1')->get();
+    $types = OrganizationsType::get();
 
     $organizations = Organization::select('id', 'short_name')->where('organization_district_id', '=', $admin->organization_district_id)->get();
 
 
-    return inertia('Admin/Statistics/OrganizationAdminCreateOrUpdate', ['organizations' => $organizations]);
+    return inertia('Admin/Statistics/OrganizationAdminCreateOrUpdate', ['districts' => $districts, 'organizations' => $organizations, 'types' => $types]);
   }
 
 
 
   public function store(Request $request)
   {
-
+   
     // php artisan make:mail Admin/Statistics/MunicipalAdminAccess --markdown=mail.admin.statistics.MunicipalAdminAccess
     $organization = Organization::find($request->organization_id['id']);
-
 
     $municipalAdmin = new User;
 
@@ -81,13 +83,12 @@ class StatisticOrganizationAdminController extends Controller
     $municipalAdmin->name = $organization->director_name;
     $municipalAdmin->patronymic = $organization->director_patronymic;
 
-    $municipalAdmin->possibilitys = "statistics_show";
-
     $municipalAdmin->organization_region_id = $organization->organization_region_id;
     $municipalAdmin->organization_district_id = $organization->organization_district_id;
     $municipalAdmin->organization_type_id = $organization->organization_type_id;
     $municipalAdmin->organization_id = $organization->id;
 
+    $municipalAdmin->possibilitys = "statistics_show," . implode(',', $request->possibilitys);
     $municipalAdmin->is_admin = true;
     $municipalAdmin->admin_type = 3;
     $municipalAdmin->email_verified_at = date('Y-m-d H:i:s');
@@ -124,7 +125,9 @@ class StatisticOrganizationAdminController extends Controller
     return Inertia::render('Admin/Statistics/OrganizationAdminCreateOrUpdate', [
       'organizationAdmin' => $organizationAdmin,
       'organizations' => $organizations,
-      'organization' => $organization
+      'organization' => $organization,
+      'districts' => [],
+      'types' => []
     ]);
   }
 
@@ -147,6 +150,7 @@ class StatisticOrganizationAdminController extends Controller
     $organizationAdmin->organization_type_id = $organization->organization_type_id;
     $organizationAdmin->organization_id = $organization->id;
 
+    $organizationAdmin->possibilitys = implode(',', $request->possibilitys);
 
     $organizationAdmin->email = $organization->org_email;
     $organizationAdmin->phone = $organization->org_phone;
@@ -172,7 +176,6 @@ class StatisticOrganizationAdminController extends Controller
   public function GetOrganizationList(Request $request)
   {
     return Organization::select('id', 'short_name')
-      ->where('organization_region_id', '=', $request->region)
       ->where('organization_district_id', '=', $request->district)
       ->where('organization_type_id', '=', $request->type)
       ->get();

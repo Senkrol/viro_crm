@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Statistic\StatisticMunicipalAdminController;
 use App\Http\Controllers\Admin\Statistic\StatisticOrganizationAdminController;
+use App\Http\Controllers\Admin\Statistic\StatisticOrganizationInfoController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'redirectAdmin'])->prefix('admin')->group(function () {
@@ -24,7 +25,7 @@ Route::middleware(['auth', 'redirectAdmin'])->prefix('admin')->group(function ()
   Route::post('/statistics/municipal-admin/getorganizationinfo', [StatisticMunicipalAdminController::class, 'GetOrganizationInfo'])->name('admin.statistics.municipal.admin.getorganizationinfo');
 
 
-  
+
   Route::get('/statistics/organizations-admins', [StatisticOrganizationAdminController::class, 'index'])->name('admin.statistics.organizations.admins.index');
 
   Route::get('/statistics/organization-admin/create', [StatisticOrganizationAdminController::class, 'create'])->name('admin.statistics.organizations.admin.create');
@@ -41,4 +42,9 @@ Route::middleware(['auth', 'redirectAdmin'])->prefix('admin')->group(function ()
 
 
 
+  Route::get('/statistics/organization/info', [StatisticOrganizationInfoController::class, 'index'])->name('admin.statistics.organizations.organization.info');
+
+  /////////////////////
+
+  Route::get('/statistics/repot/oo2', [StatisticOrganizationAdminController::class, 'index'])->name('admin.statistics.report.oo2');
 });

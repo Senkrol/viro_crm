@@ -32,7 +32,7 @@ class StatisticMunicipalAdminController extends Controller
 
   public function create()
   {
-    // взят 35й регион
+
     $districts = OrganizationsDistrict::select('id', 'district_title')->where('organization_region_id', '=', '1')->get();
     $organizations = [];
     return inertia('Admin/Statistics/MunicipalAdminCreateOrUpdate', ['districts' => $districts, 'organizations' => $organizations]);
@@ -53,7 +53,7 @@ class StatisticMunicipalAdminController extends Controller
     $municipalAdmin->name = $organization->director_name;
     $municipalAdmin->patronymic = $organization->director_patronymic;
 
-    $municipalAdmin->possibilitys = "statistics_show";
+    $municipalAdmin->possibilitys = "statistics_show,statistics_organizations_admins,statistics_organization_info";
 
     $municipalAdmin->organization_region_id = 1;
     $municipalAdmin->organization_district_id = $request->organization_district_id["id"];

@@ -161,6 +161,20 @@ if (route().current().includes('admin.statistics')) {
                 Руководители организаций
               </SidebarGroupLink>
 
+
+              <SidebarGroupLink v-if="adminPossibilitys.includes('statistics_organization_info')"
+                :href="route('admin.statistics.organizations.organization.info')"
+                :active="route().current().includes('admin.statistics.organizations.organization.info')">
+                Сведения об организации
+              </SidebarGroupLink>
+
+
+              <SidebarGroupLink v-if="adminPossibilitys.includes('statistics_report_oo2')"
+                :href="route('admin.statistics.report.oo2')"
+                :active="route().current().includes('admin.statistics.report.oo2')">
+                ОО-2
+              </SidebarGroupLink>
+
             </div>
           </div>
 
