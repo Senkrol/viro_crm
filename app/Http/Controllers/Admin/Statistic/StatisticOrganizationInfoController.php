@@ -30,10 +30,14 @@ class StatisticOrganizationInfoController extends Controller
       'organizations.org_email',
       'organizations_regions.region_title',
       'organizations_districts.district_title',
+      'organizations_founders.founder_title',
+      'organizations_types.type_title'
     )
       ->where('organizations.id', '=', $admin['organization_id'])
       ->leftJoin('organizations_regions', 'organizations_regions.id', '=', 'organizations.organization_region_id')
       ->leftJoin('organizations_districts', 'organizations_districts.id', '=', 'organizations.organization_district_id')
+      ->leftJoin('organizations_founders', 'organizations_founders.id', '=', 'organizations.organization_founder_id')
+      ->leftJoin('organizations_types', 'organizations_types.id', '=', 'organizations.organization_type_id')
       ->get();
 
     return inertia('Admin/Statistics/OrganizationInfo', [

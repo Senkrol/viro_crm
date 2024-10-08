@@ -15,10 +15,10 @@
         </FormHeader>
         <p>Регион: {{ props.organization.region_title }}</p>
         <p>Округ: {{ props.organization.district_title }} </p>
-        <p>Учредитель - </p>
-        <p>Тип - </p>
-        <p>Город/село optionsVillageCity</p>
-        
+        <p>Учредитель: {{ props.organization.founder_title }}</p>
+        <p>Тип учреждения: {{ props.organization.type_title }} </p>
+        <p>Тип населенного пункта: {{ props.organization.village_city == 1 ? 'Город' : 'Cело' }}</p>
+
         <FormHeader>
           Сведения доступные для изменения
         </FormHeader>
