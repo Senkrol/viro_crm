@@ -7,8 +7,10 @@
         <FormHeader>
           Ваш муниципальный координатор
         </FormHeader>
-
-        <p>Муниципальный координатор</p>
+        <p>ФИО: {{ props.municipalAdmin.surname }} {{ props.municipalAdmin.name }} {{ props.municipalAdmin.patronymic }}
+        </p>
+        <p>Email: {{ props.municipalAdmin.email }}</p>
+        <p>Телефон: {{ props.municipalAdmin.phone }}</p>
 
         <FormHeader>
           Фиксированные данные
@@ -30,8 +32,15 @@
           :message="form.errors.full_name">
         </FormTextInput>
 
-        <FormTextInput :title="'ИНН'" id="inn" v-model="form.inn" :message="form.errors.inn">
-        </FormTextInput>
+
+        <FormTextInput :title="'ОКПО'" id="okpo" v-model="form.okpo" :message="form.errors.okpo" />
+
+        <FormTextInput :title="'ИНН'" id="inn" v-model="form.inn" :message="form.errors.inn" />
+
+        <FormTextInput :title="'КПП'" id="kpp" v-model="form.kpp" :message="form.errors.kpp" />
+        <FormTextInput :title="'ОГРН'" id="ogrn" v-model="form.ogrn" :message="form.errors.ogrn" />
+
+
 
         <FormTextInput :title="'Код ОУ'" id="code_OU" v-model="form.code_OU" :message="form.errors.code_OU">
         </FormTextInput>
@@ -87,11 +96,8 @@ import { ref } from 'vue';
 
 const props = defineProps({
   organization: Object,
+  municipalAdmin: Object,
 });
-
-
-
-let optionsVillageCity = [{ 'id': 1, 'title': 'Город' }, { 'id': 2, 'title': 'Село' }];
 
 
 const form = useForm({
@@ -108,7 +114,11 @@ const form = useForm({
   director_name: props.organization ? props.organization.director_name : "",
   director_patronymic: props.organization ? props.organization.director_patronymic : "",
 
+  okpo: props.organization ? props.organization.okpo : "",
   inn: props.organization ? props.organization.inn : "",
+  kpp: props.organization ? props.organization.kpp : "",
+  ogrn: props.organization ? props.organization.ogrn : "",
+
   org_phone: props.organization ? props.organization.org_phone : "",
   org_email: props.organization ? props.organization.org_email : "",
 
@@ -116,7 +126,7 @@ const form = useForm({
 
 
 const submit = () => {
-  form.post(route('admin.organizations.organization.update'), {
+  form.post(route('admin.statistics.organizations.organization.update'), {
     // onError: () => form.reset("title"),
   });
 }

@@ -84,7 +84,10 @@ class OrganizationController extends Controller
     $organization->director_surname = $request->director_surname;
     $organization->director_name = $request->director_name;
     $organization->director_patronymic = $request->director_patronymic;
+    $organization->okpo = $request->okpo;
     $organization->inn = $request->inn;
+    $organization->kpp = $request->kpp;
+    $organization->ogrn = $request->ogrn;
     $organization->org_phone = $request->org_phone;
     $organization->org_email = $request->org_email;
 
@@ -133,7 +136,11 @@ class OrganizationController extends Controller
     $organization->director_name = $request->director_name;
     $organization->director_patronymic = $request->director_patronymic;
 
+    $organization->okpo = $request->okpo;
     $organization->inn = $request->inn;
+    $organization->kpp = $request->kpp;
+    $organization->ogrn = $request->ogrn;
+
     $organization->org_phone = $request->org_phone;
     $organization->org_email = $request->org_email;
 

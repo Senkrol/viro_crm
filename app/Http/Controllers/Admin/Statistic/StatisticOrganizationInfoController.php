@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Statistic;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Organizations\Organization;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,9 @@ class StatisticOrganizationInfoController extends Controller
   {
 
     $admin = Auth::user();
+    $municipalAdmin = User::where('admin_type', '=', 2)->where('organization_district_id', '=', $admin->organization_district_id)->get();
 
+    // organization_district_id
     $organization = Organization::select(
       'organizations.id',
       'organizations.code_OU',
@@ -26,6 +29,9 @@ class StatisticOrganizationInfoController extends Controller
       'organizations.director_name',
       'organizations.director_patronymic',
       'organizations.inn',
+      'organizations.okpo',
+      'organizations.kpp',
+      'organizations.ogrn',
       'organizations.org_phone',
       'organizations.org_email',
       'organizations_regions.region_title',
@@ -42,7 +48,40 @@ class StatisticOrganizationInfoController extends Controller
 
     return inertia('Admin/Statistics/OrganizationInfo', [
       'organization' => $organization[0],
+      'municipalAdmin' => $municipalAdmin[0]
 
     ]);
   }
+
+
+  public function update(Request $request)
+  {
+
+    $admin = Auth::user();
+
+    $organization = Organization::find($admin->organization_id);
+
+    $organization->short_name = $request->short_name;
+    $organization->full_name = $request->full_name;
+
+    $organization->okpo = $request->okpo;
+    $organization->inn = $request->inn;
+    $organization->kpp = $request->kpp;
+    $organization->ogrn = $request->ogrn;
+    $organization->code_OU = $request->code_OU;
+    
+    $organization->postal_address = $request->postal_address;
+
+    $organization->director_surname = $request->director_surname;
+    $organization->director_name = $request->director_name;
+    $organization->director_patronymic = $request->director_patronymic;
+
+    $organization->org_phone = $request->org_phone;
+    $organization->org_email = $request->org_email;
+
+    $organization->save();
+
+    return redirect()->route('admin.statistics.organizations.organization.info')->with('success', 'Сведения обновлены!');
+  }
+
 }

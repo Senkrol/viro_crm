@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Statistic\StatisticMunicipalAdminController;
 use App\Http\Controllers\Admin\Statistic\StatisticOrganizationAdminController;
 use App\Http\Controllers\Admin\Statistic\StatisticOrganizationInfoController;
+use App\Http\Controllers\Admin\Statistic\StatisticReportOO2Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'redirectAdmin'])->prefix('admin')->group(function () {
@@ -43,8 +44,9 @@ Route::middleware(['auth', 'redirectAdmin'])->prefix('admin')->group(function ()
 
 
   Route::get('/statistics/organization/info', [StatisticOrganizationInfoController::class, 'index'])->name('admin.statistics.organizations.organization.info');
+  Route::post('/statistics/organization/update', [StatisticOrganizationInfoController::class, 'update'])->name('admin.statistics.organizations.organization.update');
 
   /////////////////////
 
-  Route::get('/statistics/repot/oo2', [StatisticOrganizationAdminController::class, 'index'])->name('admin.statistics.report.oo2');
+  Route::get('/statistics/repot/oo2', [StatisticReportOO2Controller::class, 'index'])->name('admin.statistics.report.oo2');
 });

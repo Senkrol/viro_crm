@@ -18,8 +18,10 @@
         </FormTextInput>
 
 
-        <FormTextInput :title="'ИНН'" id="inn" v-model="form.inn" :message="form.errors.inn">
-        </FormTextInput>
+        <FormTextInput :title="'ОКПО'" id="okpo" v-model="form.okpo" :message="form.errors.okpo" />
+        <FormTextInput :title="'ИНН'" id="inn" v-model="form.inn" :message="form.errors.inn" />
+        <FormTextInput :title="'КПП'" id="kpp" v-model="form.kpp" :message="form.errors.kpp" />
+        <FormTextInput :title="'ОГРН'" id="ogrn" v-model="form.ogrn" :message="form.errors.ogrn" />
 
 
         <FormSelectInput :title="'Регион'" :id="'organization_region_id'" v-model="form.organization_region_id"
@@ -134,7 +136,11 @@ const form = useForm({
   director_name: props.organization ? props.organization.director_name : "",
   director_patronymic: props.organization ? props.organization.director_patronymic : "",
 
+  okpo: props.organization ? props.organization.okpo : "",
   inn: props.organization ? props.organization.inn : "",
+  kpp: props.organization ? props.organization.kpp : "",
+  ogrn: props.organization ? props.organization.ogrn : "",
+  
   org_phone: props.organization ? props.organization.org_phone : "",
   org_email: props.organization ? props.organization.org_email : "",
 
@@ -155,21 +161,21 @@ const deleteEvent = (id) => {
 };
 
 
-  watch(
-    () => form.organization_region_id,
-    () => {
-      if (form.organization_region_id) {
-        axios
-          .post(route('admin.organizations.districts.getlist', { id: form.organization_region_id.id }))
-          .then((response) => {
-            optionsDistrict = response.data;
-            form.organization_district_id = [];
-          })
-      }else{
-        optionsDistrict = [];
-        form.organization_district_id = [];
-      }
-    } //if you need to run callback as soon as prop changes
-  )
+watch(
+  () => form.organization_region_id,
+  () => {
+    if (form.organization_region_id) {
+      axios
+        .post(route('admin.organizations.districts.getlist', { id: form.organization_region_id.id }))
+        .then((response) => {
+          optionsDistrict = response.data;
+          form.organization_district_id = [];
+        })
+    } else {
+      optionsDistrict = [];
+      form.organization_district_id = [];
+    }
+  } //if you need to run callback as soon as prop changes
+)
 
 </script>

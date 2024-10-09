@@ -172,7 +172,7 @@ if (route().current().includes('admin.statistics')) {
               <SidebarGroupLink v-if="adminPossibilitys.includes('statistics_report_oo2')"
                 :href="route('admin.statistics.report.oo2')"
                 :active="route().current().includes('admin.statistics.report.oo2')">
-                ОО-2
+                Отчет: ОО-2
               </SidebarGroupLink>
 
             </div>
