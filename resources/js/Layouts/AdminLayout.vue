@@ -188,7 +188,8 @@ if (route().current().includes('admin.statistics')) {
           <font-awesome-icon @click="navigationShow = !navigationShow" class="relative flex items-center rounded-sm px-4 py-2 duration-300 ease-in-out border hover:border-viro-main
       lg:hidden" :icon="['fas', 'bars']" />
 
-
+          <p class="mr-4">{{ $page.props.auth.user.surname }} {{ $page.props.auth.user.name }}
+            {{ $page.props.auth.user.patronymic }} (ID{{ $page.props.auth.user.id }})</p>
           <NavLink :href="route('logout')" method="post" as="button">
             Выйти
           </NavLink>
