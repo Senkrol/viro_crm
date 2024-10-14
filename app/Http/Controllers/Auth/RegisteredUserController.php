@@ -33,8 +33,6 @@ class RegisteredUserController extends Controller
   public function store(Request $request): RedirectResponse
   {
 
-    // тут замутить проверку снилса на корректность 
-
     $request->validate([
       'surname' => 'required|string|max:255',
       'name' => 'required|string|max:255',

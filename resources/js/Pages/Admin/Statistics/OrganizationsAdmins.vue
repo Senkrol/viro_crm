@@ -10,15 +10,18 @@
 
     </PageHeader>
 
-    <div class="mb-2 grid gap-4" :class="(adminType === 1)? 'grid-cols-2': 'grid-cols-1'" >
 
-      <FormSelectInput v-if="adminType === 1" :title="'Округ/Район'" :id="'district'" v-model="district" :options="props.districts"
-        :trackBy="'id'" :labelBy="'district_title'">
+
+
+
+    <GridLines :cols="(adminType === 1) ? 2 : 1">
+      <FormSelectInput v-if="adminType === 1" :title="'Округ/Район'" :id="'district'" v-model="district"
+        :options="props.districts" :trackBy="'id'" :labelBy="'district_title'">
       </FormSelectInput>
 
       <FormTextInput :type="'search'" :title="'Поиск'" id="search" v-model="search" />
+    </GridLines>
 
-    </div>
 
     <Section>
 
@@ -49,6 +52,8 @@ import PageHeader from '@/Components/Page/PageHeader.vue';
 import Section from '@/Components/Page/Section.vue';
 import GridTableHeader from '@/Components/GridTable/GridTableHeader.vue';
 import GridTableLine from '@/Components/GridTable/GridTableLine.vue';
+
+import GridLines from '@/Components/Form/GridLines.vue'
 
 import PaginationLinks from '@/Components/Page/PaginationLinks.vue';
 

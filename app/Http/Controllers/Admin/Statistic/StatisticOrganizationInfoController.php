@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Statistic;
 
-use App\Http\Controllers\Controller;
-use App\Models\Admin\Organizations\Organization;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Admin\Organizations\Organization;
 
 
 class StatisticOrganizationInfoController extends Controller
@@ -14,7 +15,10 @@ class StatisticOrganizationInfoController extends Controller
   public function index()
   {
 
+
     $admin = Auth::user();
+
+
     $municipalAdmin = User::where('admin_type', '=', 2)->where('organization_district_id', '=', $admin->organization_district_id)->get();
 
     // organization_district_id
@@ -48,14 +52,35 @@ class StatisticOrganizationInfoController extends Controller
 
     return inertia('Admin/Statistics/OrganizationInfo', [
       'organization' => $organization[0],
-      'municipalAdmin' => $municipalAdmin[0]
-
+      'municipalAdmin' => count($municipalAdmin) ? $municipalAdmin[0] : [],
     ]);
   }
 
 
   public function update(Request $request)
   {
+
+    $admin = Auth::user();
+
+    $request->validate([
+      'short_name' => 'required|string|max:255',
+      'full_name' => 'required|string|max:255',
+      'okpo' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($admin->organization_id)],
+      'inn' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($admin->organization_id)],
+      'kpp' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($admin->organization_id)],
+      'ogrn' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($admin->organization_id)],
+      'code_OU' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($admin->organization_id)],
+      'postal_address' => ['required', 'string', 'max:255'],
+      'director_surname' => ['required', 'string', 'max:255'],
+      'director_name' => ['required', 'string', 'max:255'],
+      'director_patronymic' => ['required', 'string', 'max:255'],
+      'org_phone' => ['required', 'string', 'max:255'],
+      'org_email' => ['required', 'string', 'max:255', 'email', Rule::unique(Organization::class)->ignore($admin->organization_id), Rule::unique(User::class, 'email')->ignore($admin->id)],
+    ]);
+
+    // new isSNILS
+    // 'snils' => ['required','string','max:255','unique:' . User::class],
+    // 'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
 
     $admin = Auth::user();
 
@@ -69,7 +94,7 @@ class StatisticOrganizationInfoController extends Controller
     $organization->kpp = $request->kpp;
     $organization->ogrn = $request->ogrn;
     $organization->code_OU = $request->code_OU;
-    
+
     $organization->postal_address = $request->postal_address;
 
     $organization->director_surname = $request->director_surname;
@@ -81,7 +106,15 @@ class StatisticOrganizationInfoController extends Controller
 
     $organization->save();
 
+    if ($admin->admin_type !== 1) {
+      $admin = User::find($admin->id);
+      $admin->email = $request->org_email;
+      $admin->surname = $request->director_surname;
+      $admin->name = $request->director_name;
+      $admin->patronymic = $request->director_patronymic;
+      $admin->save();
+    }
+
     return redirect()->route('admin.statistics.organizations.organization.info')->with('success', 'Сведения обновлены!');
   }
-
 }

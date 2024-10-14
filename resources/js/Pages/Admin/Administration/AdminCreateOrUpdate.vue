@@ -135,6 +135,8 @@ let possibilitysStatistics = [
   { name: 'Доступ к разделу', id: 'statistics_show' },
   { name: 'Муниципальные координаторы', id: 'statistics_mubicipal_admins' },
   { name: 'Руководители организаций', id: 'statistics_organizations_admins' },
+  { name: 'Сведения об организации', id: 'statistics_organization_info' },
+  { name: 'Отчет: OO-2', id: 'statistics_report_oo2' },
 ];
 
 

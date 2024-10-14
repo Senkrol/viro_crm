@@ -30,14 +30,12 @@ const props = defineProps({
 
 });
 
-
 const input = ref(null);
 
-const lel = "dd";
 </script>
 
 <template>
-  <div class="flex flex-col my-2">
+  <div class="flex flex-col">
 
     <label :for="id" class="block font-medium text-sm text-gray-700">{{ title }}</label>
 

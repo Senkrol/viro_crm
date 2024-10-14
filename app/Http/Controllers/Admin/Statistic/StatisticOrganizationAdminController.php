@@ -19,6 +19,7 @@ use App\Mail\Admin\Statistics\MunicipalAdminAccess;
 use App\Mail\Admin\Statistics\MunicipalAdminAccessUpdate;
 use App\Models\Admin\Organizations\OrganizationsDistrict;
 use App\Models\Admin\Organizations\OrganizationsType;
+use App\Rules\Statistics\UniqueOrganizationAdmin;
 
 class StatisticOrganizationAdminController extends Controller
 {
@@ -77,6 +78,12 @@ class StatisticOrganizationAdminController extends Controller
     // php artisan make:mail Admin/Statistics/MunicipalAdminAccess --markdown=mail.admin.statistics.MunicipalAdminAccess
     $organization = Organization::find($request->organization_id['id']);
 
+
+    $request->validate([
+      'organization_id' => ['required', new UniqueOrganizationAdmin]
+    ]);
+
+
     $municipalAdmin = new User;
 
     $municipalAdmin->surname = $organization->director_surname;
@@ -87,8 +94,9 @@ class StatisticOrganizationAdminController extends Controller
     $municipalAdmin->organization_district_id = $organization->organization_district_id;
     $municipalAdmin->organization_type_id = $organization->organization_type_id;
     $municipalAdmin->organization_id = $organization->id;
-
-    $municipalAdmin->possibilitys = "statistics_show," . implode(',', $request->possibilitys);
+    $municipalAdmin->viro_dolgnost = 'Руководитель организации';
+    
+    $municipalAdmin->possibilitys = implode(',', $request->possibilitys);
     $municipalAdmin->is_admin = true;
     $municipalAdmin->admin_type = 3;
     $municipalAdmin->email_verified_at = date('Y-m-d H:i:s');

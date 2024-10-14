@@ -8,19 +8,19 @@
           Муниципальный координатор
         </FormHeader>
 
-        <div v-if="!props.municipalAdmin"> 
-          <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'" v-model="form.organization_district_id"
-          :message="form.errors.organization_district_id" :options="props.districts" :trackBy="'id'"
-          :labelBy="'district_title'">
-        </FormSelectInput>
+        <div v-if="!props.municipalAdmin">
+          <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'"
+            v-model="form.organization_district_id" :message="form.errors.organization_district_id"
+            :options="props.districts" :trackBy="'id'" :labelBy="'district_title'">
+          </FormSelectInput>
 
 
-        <FormSelectInput :title="'Учреждение'" :id="'organization_id'" v-model="form.organization_id"
-          :message="form.errors.organization_id" :options="optionsOrganizations" :trackBy="'id'"
-          :labelBy="'short_name'">
-        </FormSelectInput>
+          <FormSelectInput :title="'Учреждение'" :id="'organization_id'" v-model="form.organization_id"
+            :message="form.errors.organization_id" :options="optionsOrganizations" :trackBy="'id'"
+            :labelBy="'short_name'">
+          </FormSelectInput>
         </div>
-     
+
 
 
         <div v-if="organizationInfo" class="mb-4">
@@ -28,10 +28,17 @@
             Сведения о выбранной организации
           </FormHeader>
           <p>Краткое наименование: {{ organizationInfo.short_name }}</p>
-          <p>Руководитель: {{ organizationInfo.director_surname }} {{ organizationInfo.director_name }} {{ organizationInfo.director_patronymic }}</p>
+          <p>Руководитель: {{ organizationInfo.director_surname }} {{ organizationInfo.director_name }} {{
+            organizationInfo.director_patronymic }}</p>
           <p>Адрес: {{ organizationInfo.postal_address }}</p>
           <p>Телефон: {{ organizationInfo.org_phone }}</p>
           <p>Электронная почта: {{ organizationInfo.org_email }}</p>
+
+
+          <CheckboxGroup name="Administration" v-model:value="selectedPossibilitys" :options="possibilitysStatistics"
+            :groupTitle="'Доступ к разделам и отчетам'" />
+
+
         </div>
 
         <div v-if="props.municipalAdmin" class="mb-4 mt-4">
@@ -68,7 +75,7 @@ import FormSelectInput from '@/Components/Form/SelectInput.vue';
 import SubmitButton from '@/Components/Form/SubmitButton.vue'
 import DeleteButton from '@/Components/Form/DeleteButton.vue'
 import Checkbox from '@/Components/Checkbox/Checkbox.vue';
-
+import CheckboxGroup from '@/Components/Checkbox/CheckboxGroup.vue';
 import { useForm, router } from '@inertiajs/vue3';
 
 import axios from 'axios'
@@ -84,14 +91,23 @@ const props = defineProps({
 
 const form = useForm({
   id: props.municipalAdmin ? props.municipalAdmin.id : null,
-  
+
   organization_district_id: props.municipalAdmin ? props.districts.find(option => option.id === props.municipalAdmin.organization_district_id) : [],
   organization_id: props.municipalAdmin ? props.organizations.find(option => option.id === props.municipalAdmin.organization_id) : [],
+
+  possibilitys: props.municipalAdmin ? props.municipalAdmin.possibilitys.split(',') : "",
 
   passwordUpdate: false
 })
 
 let optionsOrganizations = props.organizations;
+
+const selectedPossibilitys = ref(props.municipalAdmin ? form.possibilitys : ['statistics_show']);
+let possibilitysStatistics = [
+  { name: 'Руководители организаций', id: 'statistics_organizations_admins' },
+  { name: 'Сведения об организации', id: 'statistics_organization_info' },
+  { name: 'Отчет: ОО-2. Заполнение', id: 'statistics_report_oo2' },
+];
 
 watch(
   () => form.organization_district_id,
@@ -137,6 +153,7 @@ watch(
 
 
 const submit = () => {
+  form.possibilitys = selectedPossibilitys;
   form.post(route(form.id ? 'admin.statistics.municipal.admin.update' : 'admin.statistics.municipal.admin.store'), {
     // onError: () => form.reset("title"),
   });

@@ -4,19 +4,21 @@ namespace App\Http\Controllers\Admin\Statistic;
 
 use App\Models\User;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Mail\Admin\Statistics\MunicipalAdminAccess;
-use App\Mail\Admin\Statistics\MunicipalAdminAccessUpdate;
-use Illuminate\Support\Facades\Mail;
-
-use App\Models\Admin\Organizations\Organization;
-use App\Models\Admin\Organizations\OrganizationsDistrict;
-use Illuminate\Support\Facades\Hash;
-
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Admin\Organizations\Organization;
+
+use App\Mail\Admin\Statistics\MunicipalAdminAccess;
+use App\Mail\Admin\Statistics\MunicipalAdminAccessUpdate;
+use App\Models\Admin\Organizations\OrganizationsDistrict;
+use App\Rules\Statistics\UniqueMunicipalAdmin;
 
 class StatisticMunicipalAdminController extends Controller
 {
@@ -39,12 +41,18 @@ class StatisticMunicipalAdminController extends Controller
   }
 
 
-
   public function store(Request $request)
   {
 
     // php artisan make:mail Admin/Statistics/MunicipalAdminAccess --markdown=mail.admin.statistics.MunicipalAdminAccess
+
     $organization = Organization::find($request->organization_id['id']);
+
+
+    $request->validate([
+      'organization_id' => ['required', new UniqueMunicipalAdmin]
+    ]);
+
 
 
     $municipalAdmin = new User;
@@ -53,12 +61,14 @@ class StatisticMunicipalAdminController extends Controller
     $municipalAdmin->name = $organization->director_name;
     $municipalAdmin->patronymic = $organization->director_patronymic;
 
-    $municipalAdmin->possibilitys = "statistics_show,statistics_organizations_admins,statistics_organization_info";
+    $municipalAdmin->possibilitys = implode(',', $request->possibilitys);
 
     $municipalAdmin->organization_region_id = 1;
     $municipalAdmin->organization_district_id = $request->organization_district_id["id"];
     $municipalAdmin->organization_type_id = 7;
     $municipalAdmin->organization_id = $request->organization_id["id"];
+
+    $municipalAdmin->viro_dolgnost = 'Муниципальный координатор';
 
     $municipalAdmin->is_admin = true;
     $municipalAdmin->admin_type = 2;
@@ -70,15 +80,13 @@ class StatisticMunicipalAdminController extends Controller
     $password = Str::password($length = 16, $letters = true, $numbers = true, $symbols = true, $spaces = false);
     $municipalAdmin->password = Hash::make($password);
 
+    $municipalAdmin->save();
+
     $respectfulЕreatment = $municipalAdmin->name . ' ' . $municipalAdmin->patronymic;
     $login = $municipalAdmin->email;
-
-
     Mail::mailer('smtp_viro')
       ->to($login)
       ->send(new MunicipalAdminAccess($respectfulЕreatment, $password, $login));
-
-    $municipalAdmin->save();
 
     return redirect()->route('admin.statistics.municipal.admins.index')->with('success', 'Добавлен региональный координатор!');
   }
@@ -106,8 +114,6 @@ class StatisticMunicipalAdminController extends Controller
 
   public function update(Request $request)
   {
-
-
     $organization = Organization::find($request->organization_id['id']);
 
     $municipalAdmin = User::find($request->id);
@@ -116,6 +122,7 @@ class StatisticMunicipalAdminController extends Controller
     $municipalAdmin->name = $organization->director_name;
     $municipalAdmin->patronymic = $organization->director_patronymic;
 
+    $municipalAdmin->possibilitys = implode(',', $request->possibilitys);
 
     $municipalAdmin->organization_region_id = 1;
     $municipalAdmin->organization_district_id = $request->organization_district_id["id"];
@@ -143,6 +150,13 @@ class StatisticMunicipalAdminController extends Controller
     return redirect()->route('admin.statistics.municipal.admins.index')->with('success', 'Обновлен региональный координатор!');
   }
 
+  public function delete(User $municipalAdmin)
+  {
+
+    $municipalAdmin->delete();
+
+    return redirect()->route('admin.statistics.municipal.admins.index')->with('success', 'Муниципальный координатор удален!');
+  }
 
   public function GetOrganizationList(Request $request)
   {

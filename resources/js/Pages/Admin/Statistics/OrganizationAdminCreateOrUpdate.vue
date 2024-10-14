@@ -24,7 +24,8 @@
           </FormSelectInput>
 
           <FormSelectInput :title="'Учреждение'" :id="'organization_id'" v-model="form.organization_id"
-            :options="optionsOrganizations" :trackBy="'id'" :labelBy="'short_name'">
+            :message="form.errors.organization_id" :options="optionsOrganizations" :trackBy="'id'"
+            :labelBy="'short_name'">
           </FormSelectInput>
         </div>
 
@@ -32,13 +33,16 @@
           <FormHeader v-if="!props.organizationAdmin">
             Сведения о выбранной организации
           </FormHeader>
-          
+
           <p>Краткое наименование: {{ organizationInfo.short_name }}</p>
           <p>Руководитель2: {{ organizationInfo.director_surname }} {{ organizationInfo.director_name }} {{
             organizationInfo.director_patronymic }}</p>
           <p>Адрес: {{ organizationInfo.postal_address }}</p>
           <p>Телефон: {{ organizationInfo.org_phone }}</p>
           <p>Электронная почта: {{ organizationInfo.org_email }}</p>
+
+          <CheckboxGroup name="Administration" v-model:value="selectedPossibilitys" :options="possibilitysStatistics"
+            :groupTitle="'Доступ к разделам и отчетам'" />
         </div>
 
         <div v-if="props.organizationAdmin" class="mb-4 mt-4">
@@ -46,8 +50,7 @@
             :label="'Сгенерировать новый пароль и отправить уведомление'" />
         </div>
 
-        <CheckboxGroup name="Administration" v-model:value="selectedPossibilitys" :options="possibilitysStatistics"
-          :groupTitle="'Доступ к разделам и отчетам'" />
+
 
 
         <div class="grid grid-cols-2 gap-2 mt-4">
@@ -110,7 +113,7 @@ const form = useForm({
   passwordUpdate: false
 })
 
-const selectedPossibilitys = ref(props.organizationAdmin ? form.possibilitys : []);
+const selectedPossibilitys = ref(props.organizationAdmin ? form.possibilitys : ['statistics_show']);
 
 let possibilitysStatistics = [
   { name: 'Сведения об организации', id: 'statistics_organization_info' },
