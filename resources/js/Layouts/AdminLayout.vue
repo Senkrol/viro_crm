@@ -189,9 +189,9 @@ if (route().current().includes('admin.statistics')) {
       lg:hidden" :icon="['fas', 'bars']" />
 
           <div>
-            <p class="mr-4">{{ $page.props.auth.user.surname }} {{ $page.props.auth.user.name }}
+            <p class="mr-4 text-right">{{ $page.props.auth.user.surname }} {{ $page.props.auth.user.name }}
               {{ $page.props.auth.user.patronymic }} (ID{{ $page.props.auth.user.id }})</p>
-            <p class="mr-4 text-sm">{{ $page.props.auth.user.viro_dolgnost }}</p>
+            <p class="mr-4 text-sm text-right">{{ $page.props.auth.user.viro_dolgnost }}</p>
           </div>
 
           <NavLink :href="route('logout')" method="post" as="button">
