@@ -1,5 +1,6 @@
 <template>
   <AdminLayout>
+    <Head title="Организация"></Head>
     <Section>
 
       <form @submit.prevent="submit">
@@ -8,70 +9,65 @@
           Организация
         </FormHeader>
 
+        <GridLines>
+          <FormTextInput :title="'Наименование - краткое'" id="short_name" v-model="form.short_name"
+            :message="form.errors.short_name" />
+        </GridLines>
+        <GridLines>
+          <FormTextInput :title="'Наименование - полное'" id="full_name" v-model="form.full_name"
+            :message="form.errors.full_name" />
+        </GridLines>
+        <GridLines :cols="5">
+          <FormTextInput :title="'ОКПО'" id="okpo" v-model="form.okpo" :message="form.errors.okpo" />
+          <FormTextInput :title="'ИНН'" id="inn" v-model="form.inn" :message="form.errors.inn" />
+          <FormTextInput :title="'КПП'" id="kpp" v-model="form.kpp" :message="form.errors.kpp" />
+          <FormTextInput :title="'ОГРН'" id="ogrn" v-model="form.ogrn" :message="form.errors.ogrn" />
+          <FormTextInput :title="'Код ОУ'" id="code_OU" v-model="form.code_OU" :message="form.errors.code_OU" />
+        </GridLines>
 
-        <FormTextInput :title="'Наименование - краткое'" id="short_name" v-model="form.short_name"
-          :message="form.errors.short_name">
-        </FormTextInput>
+        <GridLines :cols="2">
+          <FormSelectInput :title="'Регион'" :id="'organization_region_id'" v-model="form.organization_region_id"
+            :message="form.errors.organization_region_id" :options="props.regions" :trackBy="'id'"
+            :labelBy="'region_title'" />
 
-        <FormTextInput :title="'Наименование - полное'" id="full_name" v-model="form.full_name"
-          :message="form.errors.full_name">
-        </FormTextInput>
+          <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'"
+            v-model="form.organization_district_id" :message="form.errors.organization_district_id"
+            :options="optionsDistrict" :trackBy="'id'" :labelBy="'district_title'" />
 
+        </GridLines>
 
-        <FormTextInput :title="'ОКПО'" id="okpo" v-model="form.okpo" :message="form.errors.okpo" />
-        <FormTextInput :title="'ИНН'" id="inn" v-model="form.inn" :message="form.errors.inn" />
-        <FormTextInput :title="'КПП'" id="kpp" v-model="form.kpp" :message="form.errors.kpp" />
-        <FormTextInput :title="'ОГРН'" id="ogrn" v-model="form.ogrn" :message="form.errors.ogrn" />
+        <GridLines :cols="3">
+          <FormSelectInput :title="'Учредитель'" :id="'organization_founder_id'" v-model="form.organization_founder_id"
+            :message="form.errors.organization_founder_id" :options="props.founders" :trackBy="'id'"
+            :labelBy="'founder_title'" />
 
+          <FormSelectInput :title="'Тип'" :id="'organization_type_id'" v-model="form.organization_type_id"
+            :message="form.errors.organization_type_id" :options="props.types" :trackBy="'id'"
+            :labelBy="'type_title'" />
 
-        <FormSelectInput :title="'Регион'" :id="'organization_region_id'" v-model="form.organization_region_id"
-          :message="form.errors.organization_region_id" :options="props.regions" :trackBy="'id'"
-          :labelBy="'region_title'">
-        </FormSelectInput>
-
-        <FormSelectInput :title="'Округ/Район'" :id="'organization_district_id'" v-model="form.organization_district_id"
-          :message="form.errors.organization_district_id" :options="optionsDistrict" :trackBy="'id'"
-          :labelBy="'district_title'">
-        </FormSelectInput>
-
-        <FormSelectInput :title="'Учредитель'" :id="'organization_founder_id'" v-model="form.organization_founder_id"
-          :message="form.errors.organization_founder_id" :options="props.founders" :trackBy="'id'"
-          :labelBy="'founder_title'">
-        </FormSelectInput>
-
-        <FormSelectInput :title="'Тип'" :id="'organization_type_id'" v-model="form.organization_type_id"
-          :message="form.errors.organization_type_id" :options="props.types" :trackBy="'id'" :labelBy="'type_title'">
-        </FormSelectInput>
-
-        <FormTextInput :title="'Код ОУ'" id="code_OU" v-model="form.code_OU" :message="form.errors.code_OU">
-        </FormTextInput>
-
-        <FormSelectInput :title="'Город/Село'" :id="'village_city'" v-model="form.village_city"
-          :message="form.errors.village_city" :options="optionsVillageCity" :trackBy="'id'" :labelBy="'title'">
-        </FormSelectInput>
+          <FormSelectInput :title="'Город/Село'" :id="'village_city'" v-model="form.village_city"
+            :message="form.errors.village_city" :options="optionsVillageCity" :trackBy="'id'" :labelBy="'title'" />
+        </GridLines>
 
         <FormTextInput :title="'Почтовый адрес'" id="postal_address" v-model="form.postal_address"
-          :message="form.errors.postal_address">
-        </FormTextInput>
+          :message="form.errors.postal_address" />
 
-        <FormTextInput :title="'Фамилия руководителя'" id="director_surname" v-model="form.director_surname"
-          :message="form.errors.director_surname">
-        </FormTextInput>
-        <FormTextInput :title="'Имя руководителя'" id="director_name" v-model="form.director_name"
-          :message="form.errors.director_name">
-        </FormTextInput>
-        <FormTextInput :title="'Отчество руководителя'" id="director_patronymic" v-model="form.director_patronymic"
-          :message="form.errors.director_patronymic">
-        </FormTextInput>
+        <GridLines :cols="3">
+          <FormTextInput :title="'Фамилия руководителя'" id="director_surname" v-model="form.director_surname"
+            :message="form.errors.director_surname" />
+
+          <FormTextInput :title="'Имя руководителя'" id="director_name" v-model="form.director_name"
+            :message="form.errors.director_name" />
+
+          <FormTextInput :title="'Отчество руководителя'" id="director_patronymic" v-model="form.director_patronymic"
+            :message="form.errors.director_patronymic" />
+        </GridLines>
 
 
-
-        <FormTextInput :title="'Телефон'" id="org_phone" v-model="form.org_phone" :message="form.errors.org_phone">
-        </FormTextInput>
-
-        <FormTextInput :title="'Почта'" id="org_email" v-model="form.org_email" :message="form.errors.org_email">
-        </FormTextInput>
-
+        <GridLines :cols="2">
+          <FormTextInput :title="'Телефон'" id="org_phone" v-model="form.org_phone" :message="form.errors.org_phone" />
+          <FormTextInput :title="'Почта'" id="org_email" v-model="form.org_email" :message="form.errors.org_email" />
+        </GridLines>
 
         <div class="grid grid-cols-2 gap-2 mt-4">
           <DeleteButton @click.prevent="deleteEvent(organization.id)" :disabled="!props.organization">
@@ -88,7 +84,6 @@
   </AdminLayout>
 </template>
 
-
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import Section from '@/Components/Page/Section.vue';
@@ -96,11 +91,12 @@ import Section from '@/Components/Page/Section.vue';
 import FormHeader from '@/Components/Form/Header.vue';
 import FormTextInput from '@/Components/Form/TextInput.vue';
 import FormSelectInput from '@/Components/Form/SelectInput.vue';
+import GridLines from '@/Components/Form/GridLines.vue'
 
 import SubmitButton from '@/Components/Form/SubmitButton.vue'
 import DeleteButton from '@/Components/Form/DeleteButton.vue'
 
-import { useForm, router } from '@inertiajs/vue3';
+import { Head, useForm, router } from '@inertiajs/vue3';
 import axios from 'axios'
 import { watch } from 'vue';
 
@@ -140,7 +136,7 @@ const form = useForm({
   inn: props.organization ? props.organization.inn : "",
   kpp: props.organization ? props.organization.kpp : "",
   ogrn: props.organization ? props.organization.ogrn : "",
-  
+
   org_phone: props.organization ? props.organization.org_phone : "",
   org_email: props.organization ? props.organization.org_email : "",
 

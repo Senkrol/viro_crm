@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin\Organizations;
 
-use App\Http\Controllers\Controller;
-use App\Models\Admin\Organizations\Organization;
-use App\Models\Admin\Organizations\OrganizationsDistrict;
-use App\Models\Admin\Organizations\OrganizationsFounder;
-use App\Models\Admin\Organizations\OrganizationsRegion;
-use App\Models\Admin\Organizations\OrganizationsType;
-use Illuminate\Http\Request;
-
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use App\Models\Admin\Organizations\Organization;
+
+use App\Models\Admin\Organizations\OrganizationsType;
+use App\Models\Admin\Organizations\OrganizationsRegion;
+use App\Models\Admin\Organizations\OrganizationsFounder;
+use App\Models\Admin\Organizations\OrganizationsDistrict;
 
 class OrganizationController extends Controller
 {
@@ -68,6 +70,28 @@ class OrganizationController extends Controller
   public function store(Request $request)
   {
 
+    $request->validate([
+      'organization_region_id' => 'required',
+      'organization_district_id' => 'required',
+      'organization_founder_id' => 'required',
+      'organization_type_id' => 'required',
+      'village_city' => 'required', //не забыть разобраться с массивами
+      'short_name' => 'required|string|max:255',
+      'full_name' => 'required|string|max:255',
+      'okpo' => ['required', 'string', 'max:255', Rule::unique(Organization::class)],
+      'inn' => ['required', 'string', 'max:255', Rule::unique(Organization::class)],
+      'kpp' => ['required', 'string', 'max:255', Rule::unique(Organization::class)],
+      'ogrn' => ['required', 'string', 'max:255', Rule::unique(Organization::class)],
+      'code_OU' => ['required', 'string', 'max:255', Rule::unique(Organization::class)],
+      'postal_address' => ['required', 'string', 'max:255'],
+      'director_surname' => ['required', 'string', 'max:255'],
+      'director_name' => ['required', 'string', 'max:255'],
+      'director_patronymic' => ['required', 'string', 'max:255'],
+      'org_phone' => ['required', 'string', 'max:255'],
+      'org_email' => ['required', 'string', 'max:255', 'email', Rule::unique(Organization::class), Rule::unique(User::class, 'email')],
+    ]);
+
+
     $organization = new Organization;
 
     $organization->organization_region_id = $request->organization_region_id["id"];
@@ -93,6 +117,8 @@ class OrganizationController extends Controller
 
     $organization->save();
 
+
+
     return redirect()->route('admin.organizations.organizations.index')->with('success', 'Добавлена организация - «' . $request->short_name . '»!');
   }
 
@@ -117,6 +143,32 @@ class OrganizationController extends Controller
 
   public function update(Request $request)
   {
+    $admin = User::where('organization_id', '=', $request->id)->first();
+
+    $ignoreAdminID = $admin ? $admin['id'] : 0;
+
+
+    $request->validate([
+      'organization_region_id' => 'required',
+      'organization_district_id' => 'required',
+      'organization_founder_id' => 'required',
+      'organization_type_id' => 'required',
+      'village_city' => 'required', //не забыть разобраться с массивами
+      'short_name' => 'required|string|max:255',
+      'full_name' => 'required|string|max:255',
+      'okpo' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($request->id)],
+      'inn' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($request->id)],
+      'kpp' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($request->id)],
+      'ogrn' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($request->id)],
+      'code_OU' => ['required', 'string', 'max:255', Rule::unique(Organization::class)->ignore($request->id)],
+      'postal_address' => ['required', 'string', 'max:255'],
+      'director_surname' => ['required', 'string', 'max:255'],
+      'director_name' => ['required', 'string', 'max:255'],
+      'director_patronymic' => ['required', 'string', 'max:255'],
+      'org_phone' => ['required', 'string', 'max:255'],
+      'org_email' => ['required', 'string', 'max:255', 'email', Rule::unique(Organization::class)->ignore($request->id), Rule::unique(User::class, 'email')->ignore($ignoreAdminID)],
+    ]);
+
 
     $organization = Organization::find($request->id);
 
@@ -145,6 +197,16 @@ class OrganizationController extends Controller
     $organization->org_email = $request->org_email;
 
     $organization->save();
+
+
+
+    if ($admin) {
+      $admin->email = $request->org_email;
+      $admin->surname = $request->director_surname;
+      $admin->name = $request->director_name;
+      $admin->patronymic = $request->director_patronymic;
+      $admin->save();
+    }
 
     return redirect()->route('admin.organizations.organizations.index')->with('success', 'Организация «' . $organization->short_name . '» обновлена!');
   }
