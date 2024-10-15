@@ -182,14 +182,18 @@ if (route().current().includes('admin.statistics')) {
       </div>
     </aside>
 
-    <div class="relative flex flex-1 flex-col  overflow-y-auto overflow-x-hidden">
+    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
       <header class="sticky top-0 z-999 flex w-full bg-white drop-shadow dark:bg-boxdark dark:drop-shadow-none">
-        <div class="flex flex-grow items-center justify-between py-4 md:px-6 2xl:px-11 lg:justify-end  px-4 ">
+        <div class="flex flex-grow items-center justify-between py-2 md:px-6 2xl:px-11 lg:justify-end  px-4 ">
           <font-awesome-icon @click="navigationShow = !navigationShow" class="relative flex items-center rounded-sm px-4 py-2 duration-300 ease-in-out border hover:border-viro-main
       lg:hidden" :icon="['fas', 'bars']" />
 
-          <p class="mr-4">{{ $page.props.auth.user.surname }} {{ $page.props.auth.user.name }}
-            {{ $page.props.auth.user.patronymic }} (ID{{ $page.props.auth.user.id }})</p>
+          <div>
+            <p class="mr-4">{{ $page.props.auth.user.surname }} {{ $page.props.auth.user.name }}
+              {{ $page.props.auth.user.patronymic }} (ID{{ $page.props.auth.user.id }})</p>
+            <p class="mr-4 text-sm">{{ $page.props.auth.user.viro_dolgnost }}</p>
+          </div>
+
           <NavLink :href="route('logout')" method="post" as="button">
             Выйти
           </NavLink>
