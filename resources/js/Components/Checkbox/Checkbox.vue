@@ -60,7 +60,7 @@ const handleClick = (event) => {
       class="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
       type="checkbox" :name="name" :id="id" :value="value" :checked="checked" :disabled="disabled"
       @input="handleClick($event)">
-    <label :for="id" class="cursor-pointer ms-2 text-sm text-gray-900">{{ label }}</label>
+    <label :for="id" class="cursor-pointer ms-2 text-gray-900">{{ label }}</label>
 
   </div>
 

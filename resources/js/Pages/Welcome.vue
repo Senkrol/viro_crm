@@ -86,13 +86,13 @@ onMounted(() => {
 
 
 onBeforeUnmount(() => {
-  
- // window.removeEventListener('DOMMouseScroll', handleMouseWheelDOM); // Mozilla Firefox
+
+  // window.removeEventListener('DOMMouseScroll', handleMouseWheelDOM); // Mozilla Firefox
   window.removeEventListener('mousewheel', handleMouseWheel, { passive: false });  // Other browsers
 
   //window.removeEventListener('touchstart', touchStart); // mobile devices
- // window.removeEventListener('touchmove', touchMove); // mobile devices
-  
+  // window.removeEventListener('touchmove', touchMove); // mobile devices
+
 })
 </script>
 <template>
@@ -161,17 +161,23 @@ onBeforeUnmount(() => {
         <div class="bg-white  h-[200px] rounded flex justify-center items-center">
           <h1>Данные о курсе (в разработке)</h1>
         </div>
-
       </div>
-
-
-
     </section>
-    <section class="fullpage w-full h-screen">
-      <h1>Реализовано за год</h1>
+
+    <section class="fullpage w-full h-screen bg-[#283655]">
+      <div class="grid gap-10 w-full p-20">
+        <div class="bg-white  h-[200px] rounded flex justify-center items-center">
+          <h1>Реализовано за год (в разработке)</h1>
+        </div>
+      </div>
     </section>
-    <section class="fullpage w-full h-screen">
-      <p>Техническая поддержка</p>
+
+    <section class="fullpage w-full h-screen bg-[#283655]">
+      <div class="grid gap-10 w-full p-20">
+        <div class="bg-white  h-[200px] rounded flex justify-center items-center">
+          <h1>Техническая поддержка (в разработке)</h1>
+        </div>
+      </div>
     </section>
 
   </div>

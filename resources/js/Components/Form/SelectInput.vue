@@ -8,7 +8,7 @@ const model = defineModel({
 const props = defineProps({
   title: {
     type: String,
-    required: true,
+    default: null,
   },
   id: {
     type: String,
@@ -41,7 +41,7 @@ const props = defineProps({
     <label :for="id" class="block font-medium text-sm text-gray-700">{{ title }}</label>
 
     <vue-multiselect :id="id" v-model="model" :options="options" :track-by="trackBy" :label="labelBy" placeholder=""
-      select-label="Выбрать" selected-label="Выбрано" noRecords="sdasd"  deselect-label="Убрать">
+      select-label="Выбрать" selected-label="Выбрано" noRecords="sdasd" deselect-label="Убрать">
       <template v-slot:noResult><span>Нет результатов</span></template>
       <template v-slot:noOptions><span>Нет результатов</span></template>
     </vue-multiselect>

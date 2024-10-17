@@ -49,4 +49,7 @@ Route::middleware(['auth', 'redirectAdmin'])->prefix('admin')->group(function ()
   /////////////////////
 
   Route::get('/statistics/repot/oo2', [StatisticReportOO2Controller::class, 'index'])->name('admin.statistics.report.oo2');
+
+  Route::get('/statistics/repot/oo2/{step}/edit', [StatisticReportOO2Controller::class, 'edit'])->name('admin.statistics.report.oo2.edit');
+  
 });
