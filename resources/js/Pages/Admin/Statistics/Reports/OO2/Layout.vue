@@ -12,8 +12,9 @@
       </div>
     </div>
     <div class="flex ">
-      <div :class="reportNavigationShow ? 'w-80' : 'w-0'" class="ease-linear duration-200 overflow-hidden">
-        <div class="flex flex-col p-4 border-r w-80 gap-1">
+      <div :class="reportNavigationShow ? 'w-40' : 'w-0'" class="ease-linear duration-200 overflow-hidden">
+        <div class="flex flex-col p-4 border-r w-40 gap-1">
+          
           <Link v-for="link in props.links" :key="link.part"
             :href="route('admin.statistics.report.oo2.edit', { step: link.part })"
             class="hover:bg-viro-second hover:text-white hover:border-viro-second p-2 rounded-r-sm border-l-4"
@@ -24,7 +25,7 @@
         </div>
       </div>
 
-      <div class="p-4 flex flex-1 flex-col">
+      <div class="p-4 h-fit flex flex-1 flex-col overflow-hidden">
         <slot />
       </div>
     </div>

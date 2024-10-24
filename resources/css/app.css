@@ -17,6 +17,17 @@ min-width - допустим sm - тоесть больше 640 пикселей
   }
 }
 
+/* ничего святого... будем таблички описывать */
+table {
+  background: white;
+}
+td {
+  border: 1px solid gray;
+  padding: 5px;
+}
+
+/* закончили описывать таблички */
+
 /* fix */
 
 .multiselect__input {
