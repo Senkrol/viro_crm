@@ -20,7 +20,7 @@ class StatisticReportOO2Controller extends Controller
 
     $report = StatisticsReportOO2::where('year', '=', date('Y'))->where('organization_id', '=', $admin->organization_id)->first();
 
-  
+
     return inertia('Admin/Statistics/Reports/OO2/Report', ['step' => $request->step, 'report' => $report]);
   }
 
@@ -172,16 +172,16 @@ class StatisticReportOO2Controller extends Controller
       return $this->stepsValidate(1, 'Раздел 1.1 строка 01 графа 16 >= Раздел 1.1 строка 01 сумма граф 07 + 08');
     }
     //37
-    if(!$cells['3_3']){
+    if (!$cells['3_3']) {
       return $this->stepsValidate(1, 'Не заполнена строка 3 графа 3 Раздела 1.1');
     }
-    
+
 
     $admin = Auth::user();
 
     StatisticsReportOO2::updateOrCreate(
       ['organization_id' => $admin->organization_id, 'year' => date('Y')],
-      ['step1' => json_encode($request->editableCells)]
+      ['step_1' => json_encode($request->editableCells)]
     );
 
     return redirect()->route('admin.statistics.report.oo2.edit', ['step' => '1'])->with('successSpot', 'Успешно');
@@ -189,7 +189,119 @@ class StatisticReportOO2Controller extends Controller
 
   }
 
-  public function step2(Request $request){
+  public function step2(Request $request)
+  {
 
+    $cells = []; //для удобной работы с проверками. 
+    foreach ($request->editableCells as $r) {
+      $cells[$r['cell']] = $r['val'];
+    }
+
+    for ($n = 1; $n <= 30; $n++) {
+      if (!$cells[$n . '_3'] && $cells[$n . '_4']) { // если заполнен только 4й столбец
+        return $this->stepsValidate(2, 'Раздел 1.1.1 графа 3 >= графа 4 по Зданию ' . $n);
+      }
+
+      if ($cells[$n . '_3'] && $cells[$n . '_4']) { //если оба атрибута заполнены 
+        if ($cells[$n . '_3'] >= $cells[$n . '_4']) {
+          return $this->stepsValidate(2, 'Раздел 1.1.1 графа 3 >= графа 4 по Зданию ' . $n);
+        }
+      }
+
+      if ($cells[$n . '_3'] || $cells[$n . '_4']) { // если данные по зданию есть то должен быть указан материал
+        if (1 != ($cells[$n . '_5'] + $cells[$n . '_6'] + $cells[$n . '_7'] + $cells[$n . '_8'] + $cells[$n . '_9'] + $cells[$n . '_10'] + $cells[$n . '_11'] + $cells[$n . '_12'])) {
+          return $this->stepsValidate(2, 'Раздел 1.1.1 графа 03 не соответствует Раздел 1.1.1 сумма граф 05-12 по Зданию ' . $n);
+        }
+      }
+
+      if (!$cells[$n . '_3'] && !$cells[$n . '_4']) { // если данных по зданию нет то не должно быть и данных по материалам
+        if (0 < ($cells[$n . '_5'] + $cells[$n . '_6'] + $cells[$n . '_7'] + $cells[$n . '_8'] + $cells[$n . '_9'] + $cells[$n . '_10'] + $cells[$n . '_11'] + $cells[$n . '_12'])) {
+          return $this->stepsValidate(2, 'Раздел 1.1.1 графа 03 не соответствует Раздел 1.1.1 сумма граф 05-12 по Зданию ' . $n);
+        }
+      }
+    }
+
+    $admin = Auth::user();
+
+    StatisticsReportOO2::updateOrCreate(
+      ['organization_id' => $admin->organization_id, 'year' => date('Y')],
+      ['step_2' => json_encode($request->editableCells)]
+    );
+
+    return redirect()->route('admin.statistics.report.oo2.edit', ['step' => '2'])->with('successSpot', 'Успешно');
+  }
+
+  public function step3(Request $request)
+  {
+
+    $cells = []; //для удобной работы с проверками. 
+    foreach ($request->editableCells as $r) {
+      $cells[$r['cell']] = $r['val'];
+    }
+
+    for ($n = 1; $n <= 22; $n++) {
+      if ($cells[$n . '_3'] < $cells[$n . '_4']) {
+        return $this->stepsValidate(3, 'Раздел 1.2 строка 01 графа 03 >= Раздел 1.2 строка ' . $n . ' графа 04');
+      }
+    }
+
+    if ($cells['23_3'] < $cells['24_3']) {
+      return $this->stepsValidate(3, 'Раздел 1.2 строка 23 графа 03 >= Раздел 1.2 строка 24 графа 03');
+    }
+    if ($cells['23_3'] < $cells['25_3']) {
+      return $this->stepsValidate(3, 'Раздел 1.2 строка 23 графа 03 >= Раздел 1.2 строка 25 графа 03');
+    }
+    if ($cells['5_3'] && $cells['26_3'] < 1) {
+      return $this->stepsValidate(3, 'Раздел 1.2 строка 05 графа 03 не соответствует Раздел 1.2 строка 26 графа 03');
+    }
+    if (!$cells['5_3'] && $cells['26_3']) {
+      return $this->stepsValidate(3, 'Раздел 1.2 строка 05 графа 03 не соответствует Раздел 1.2 строка 26 графа 03');
+    }
+
+    $admin = Auth::user();
+
+    StatisticsReportOO2::updateOrCreate(
+      ['organization_id' => $admin->organization_id, 'year' => date('Y')],
+      ['step_3' => json_encode($request->editableCells)]
+    );
+
+    return redirect()->route('admin.statistics.report.oo2.edit', ['step' => '3'])->with('successSpot', 'Успешно');
+  }
+
+  public function step4(Request $request)
+  {
+
+
+
+    $cells = []; //для удобной работы с проверками. 
+    foreach ($request->editableCells as $r) {
+      $cells[$r['cell']] = $r['val'];
+    }
+
+    for ($n = 1; $n <= 3; $n++) {
+      if ($cells[$n . '_3'] < $cells[$n . '_4']) {
+        return $this->stepsValidate(4, 'Раздел 1.3 строка 01 графа 03 >= Раздел 1.3 строка ' . $n . ' графа 04');
+      }
+    }
+    // 5 это машины а 6 это места
+    if ($cells['5_3'] > $cells['6_3']) {
+      return $this->stepsValidate(4, 'Раздел 1.3 строка 05 графа 03 не соответствует Раздел 1.3 строка 06 графа 03');
+    }
+    
+    if (!$cells['5_3'] && $cells['6_3']) {
+      return $this->stepsValidate(4, 'Раздел 1.3 строка 05 графа 03 не соответствует Раздел 1.3 строка 06 графа 03');
+    }
+
+    //for ($n = 1; $n <= 22; $n++) {}
+
+
+    $admin = Auth::user();
+
+    StatisticsReportOO2::updateOrCreate(
+      ['organization_id' => $admin->organization_id, 'year' => date('Y')],
+      ['step_4' => json_encode($request->editableCells)]
+    );
+
+    return redirect()->route('admin.statistics.report.oo2.edit', ['step' => '4'])->with('successSpot', 'Успешно');
   }
 }

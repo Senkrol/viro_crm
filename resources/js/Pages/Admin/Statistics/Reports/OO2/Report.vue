@@ -5,11 +5,10 @@
         <p>Форма заполнения отчета ОО-2</p>
         <p>Выберите интересующий вас раздел</p>
       </div>
-      {{  props.report }}
-      <Step1 v-if="props.step == 1" :stepData="props.report ? JSON.parse(props.report['step1']) : []"></Step1>
-      <Step2 v-if="props.step == 2" :stepData="props.report ? JSON.parse(props.report['step2']) : []"></Step2>
-      <Step3 v-if="props.step == 3"></Step3>
-      <Step4 v-if="props.step == 4"></Step4>
+      <Step1 v-if="props.step == 1" :stepData="props.report ? JSON.parse(props.report['step_1']) : []"></Step1>
+      <Step2 v-if="props.step == 2" :stepData="props.report ? JSON.parse(props.report['step_2']) : []"></Step2>
+      <Step3 v-if="props.step == 3" :stepData="props.report ? JSON.parse(props.report['step_3']) : []"></Step3>
+      <Step4 v-if="props.step == 4" :stepData="props.report ? JSON.parse(props.report['step_4']) : []"></Step4>
     </ReportLayout>
   </AdminLayout>
 </template>
@@ -20,14 +19,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 import ReportLayout from '@/Pages/Admin/Statistics/Reports/OO2/Layout.vue';
 
-import FormHeader from '@/Components/Form/Header.vue';
-import FormTextInput from '@/Components/Form/TextInput.vue';
-
-import SubmitButton from '@/Components/Form/SubmitButton.vue'
-
-import { useForm, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
 
 import Step1 from '@/Pages/Admin/Statistics/Reports/OO2/Step1.vue';
 import Step2 from '@/Pages/Admin/Statistics/Reports/OO2/Step2.vue';
@@ -62,6 +54,5 @@ const links = ref([
   { part: 20, title: 'Раздел 3.6.' },
   { part: 21, title: 'Завершение' },
 ]);
-
 
 </script>

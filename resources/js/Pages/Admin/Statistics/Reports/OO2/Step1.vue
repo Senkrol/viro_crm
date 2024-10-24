@@ -2,12 +2,13 @@
 
 import SubmitButtonShort from '@/Components/Form/SubmitButtonShort.vue';
 
-import { useForm, router } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
   stepData: Object,
 });
 
+let stepData = props.stepData ? props.stepData : [];
 const form = useForm({
   editableCells: [],
 })
@@ -83,24 +84,24 @@ const submit = () => {
           <td>Здания организации</td>
           <td class="text-center">01</td>
           <td v-for="i in 22" :key="i" contenteditable="true" :id="'1_' + (i + 2)" class="editable_cells bg-slate-300">
-            {{ props.stepData.find(option => option.cell === '1_' + (i + 2)) ?
-              props.stepData.find(option => option.cell === '1_' + (i + 2)).val : '' }}
+            {{ stepData.find(option => option.cell === '1_' + (i + 2)) ?
+              stepData.find(option => option.cell === '1_' + (i + 2)).val : '' }}
           </td>
         </tr>
         <tr>
           <td>Кроме того, часть здания (помещения)</td>
           <td class="text-center">02</td>
           <td v-for="i in 22" :key="i" contenteditable="true" :id="'2_' + (i + 2)" class="editable_cells bg-slate-300">
-            {{ props.stepData.find(option => option.cell === '2_' + (i + 2)) ?
-              props.stepData.find(option => option.cell === '2_' + (i + 2)).val : '' }}
+            {{ stepData.find(option => option.cell === '2_' + (i + 2)) ?
+              stepData.find(option => option.cell === '2_' + (i + 2)).val : '' }}
           </td>
         </tr>
         <tr>
           <td>"Справка 1.<br>Число огнетушителей (ед)"</td>
           <td>03</td>
           <td contenteditable="true" :id="'3_3'" class="editable_cells bg-slate-300">
-            {{ props.stepData.find(option => option.cell === '3_3') ?
-              props.stepData.find(option => option.cell === '3_3').val : '' }}
+            {{ stepData.find(option => option.cell === '3_3') ?
+              stepData.find(option => option.cell === '3_3').val : '' }}
           </td>
           <td v-for="i in 21" :key="i"></td>
         </tr>

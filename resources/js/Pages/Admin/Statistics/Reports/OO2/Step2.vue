@@ -2,12 +2,13 @@
 
 import SubmitButtonShort from '@/Components/Form/SubmitButtonShort.vue';
 
-import { useForm, router } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
   stepData: Object,
 });
 
+let stepData = props.stepData ? props.stepData : [];
 const form = useForm({
   editableCells: [],
 })
@@ -30,8 +31,9 @@ const submit = () => {
   <div class="flex justify-between align-top">
     <div>
       <p>Раздел 1. Имущество организации (на конец отчетного года)</p>
-      <p>1.1. Характеристика здания (зданий)</p>
-      <p>Код по ОКЕИ: единица – 642</p>
+      <p>1.1.1 Характеристика материала стен здания (зданий)</p>
+      <p>Укажите в графах 5 − 12 по каждой из строк соответствующий код: да – 1, нет – 0</p>
+      <p>Код по ОКЕИ: год – 366</p>
     </div>
     <form @submit.prevent="submit">
       <SubmitButtonShort :disabled="form.processing">Сохранить</SubmitButtonShort>
@@ -72,8 +74,8 @@ const submit = () => {
           <td class="text-center">{{ j }}</td>
           <td v-for="i in 10" :key="i" contenteditable="true" :id="j + '_' + (i + 2)"
             class="editable_cells bg-slate-300">
-            {{ props.stepData.find(option => option.cell === j + '_' + (i + 2)) ?
-              props.stepData.find(option => option.cell === j + '_' + (i + 2)).val : '' }}
+            {{ stepData.find(option => option.cell === j + '_' + (i + 2)) ?
+              stepData.find(option => option.cell === j + '_' + (i + 2)).val : '' }}
           </td>
         </tr>
       </tbody>
